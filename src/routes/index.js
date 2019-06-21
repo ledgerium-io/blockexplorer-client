@@ -8,7 +8,7 @@ import blockexplorer from './blockexplorer';
 import block from './block';
 import transaction from './transaction';
 import address from './address';
-import validator from './validator';
+import nodes from './nodes';
 
 import { connect } from 'react-redux';
 
@@ -26,7 +26,7 @@ class MainApp extends Component {
 							<Route path={`${match.url}/block/:block`} component={block} />
 							<Route path={`${match.url}/tx/:txn`} component={transaction} />
 							<Route path={`${match.url}/address/:address`} component={address} />
-							<Route path={`${match.url}/validator`} component={validator} />
+							<Route path={`${match.url}/nodes`} component={nodes} />
 							<Redirect to="/error" />
 						</Switch>
 					</div>
