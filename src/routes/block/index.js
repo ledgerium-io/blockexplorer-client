@@ -79,11 +79,11 @@ export default class extends Component {
       <Fragment>
         <div className="d-flex justify-content-between align-items-center">
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
-        <a href="/app/blockexplorer">
+        <NavLink to="/app/blockexplorer">
         <Button color="primary" size="sm" className="mb-2">
           <i className="iconsminds-arrow-out-left"/> Go back
         </Button>
-        </a>
+        </NavLink>
         </div>
         <Separator className="mb-5" />
 
@@ -110,7 +110,7 @@ export default class extends Component {
                   <Table>
                     <tbody>
                       <tr><td>Hash</td><td>{block.hash}</td></tr>
-                      <tr><td>Parent Hash</td><td><a href={'/app/block/'+(block.number-1)}>{block.parentHash}</a></td></tr>
+                      <tr><td>Parent Hash</td><td><NavLink to={'/app/block/'+(block.number-1)}>{block.parentHash}</NavLink></td></tr>
                       <tr><td>Difficulty</td><td>{block.difficulty}</td></tr>
                       <tr><td>Total Difficulty</td><td>{block.totalDifficulty}</td></tr>
                       <tr><td>Nonce</td><td>{block.nonce}</td></tr>
@@ -178,7 +178,7 @@ export default class extends Component {
                           </div>
                           <div className="card-body pt-1">
                             <p className="mb-0">
-                            <a href={'/app/tx/'+tx.hash}>{tx.hash}</a>
+                            <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
                             </p>
                             <p className="mb-0">
                             {tx.from} <i className="iconsminds-arrow-out-right"/> {tx.to}

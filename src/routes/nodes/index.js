@@ -107,11 +107,11 @@ export default class extends Component {
               <Colxx sm="12" className="mb-4">
               <div className="d-flex justify-content-between align-items-center">
               <h3> Active Nodes: {this.state.data.length}/{this.state.data.length} </h3>
-              <a href="/app/blockexplorer">
+              <NavLink to="/app/blockexplorer">
               <Button color="primary" size="sm" className="mb-2">
                 <i className="iconsminds-arrow-out-left"/> Go back
               </Button>
-              </a>
+              </NavLink>
               </div>
               <Table>
                 <thead>

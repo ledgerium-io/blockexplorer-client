@@ -64,11 +64,11 @@ export default class extends Component {
       <Fragment>
         <div className="d-flex justify-content-between align-items-center">
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
-        <a href="/app/blockexplorer">
+        <NavLink to="/app/blockexplorer">
         <Button color="primary" size="sm" className="mb-2">
           <i className="iconsminds-arrow-out-left"/> Go back
         </Button>
-        </a>
+        </NavLink>
         </div>
         <Separator className="mb-5" />
 
@@ -88,7 +88,7 @@ export default class extends Component {
                   <p><strong> {address.address}</strong> </p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> {address.transactions.length} Transactions Sent/Recieved </span>
-                    <span> Last Balance Update Block #<a href={"/app/block/"+address.blockNumber}>{address.blockNumber} </a></span>
+                    <span> Last Balance Update Block #<NavLink to={"/app/block/"+address.blockNumber}>{address.blockNumber} </NavLink></span>
                   </div>
                   <p></p>
                   <div className="progress-bar-circle">
@@ -145,7 +145,7 @@ export default class extends Component {
                         </div>
                         <div className="card-body pt-1">
                           <p className="mb-0">
-                          <a href={'/app/tx/'+tx.hash}>{tx.hash}</a>
+                          <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
                           </p>
                           <p className="mb-0">
                           {tx.from} <i className="iconsminds-arrow-out-right"/> {tx.to}

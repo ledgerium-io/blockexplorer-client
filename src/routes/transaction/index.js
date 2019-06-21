@@ -106,11 +106,11 @@ export default class extends Component {
       <Fragment>
       <div className="d-flex justify-content-between align-items-center">
       <h3>LEDGERIUM BLOCK EXPLORER</h3>
-      <a href="/app/dashboards/blockexplorer">
+      <NavLink to="/app/dashboards/blockexplorer">
       <Button color="primary" size="sm" className="mb-2">
         <i className="iconsminds-arrow-out-left"/> Go back
       </Button>
-      </a>
+      </NavLink>
       </div>
         <Separator className="mb-5" />
 
@@ -128,7 +128,7 @@ export default class extends Component {
                   </CardTitle>
                   <br/>
                   <p><strong> {tx.hash}</strong></p>
-                  <p><a href={'/app/dashboards/blockexplorer/address/'+(tx.from)}>{tx.from}</a> <i className="iconsminds-arrow-out-right"/> <a href={'/app/dashboards/blockexplorer/address/'+(tx.to)}>{tx.to}</a></p>
+                  <p><NavLink to={'/app/dashboards/blockexplorer/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/dashboards/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> Transaction </span>
                     <span> Success </span>
@@ -137,7 +137,7 @@ export default class extends Component {
                   <p></p>
                   <Table>
                     <tbody>
-                      <tr><td>Block Number</td><td><a href={'/app/dashboards/blockexplorer/block/'+(tx.blockNumber)}>{tx.blockNumber}</a></td></tr>
+                      <tr><td>Block Number</td><td><NavLink to={'/app/dashboards/blockexplorer/block/'+(tx.blockNumber)}>{tx.blockNumber}</NavLink></td></tr>
                       <tr><td>Nonce</td><td>{tx.nonce}</td></tr>
                       <tr><td>TX Fee</td><td>{tx.gasPrice}</td></tr>
 

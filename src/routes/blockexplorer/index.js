@@ -149,7 +149,6 @@ export default class extends Component {
 
   render() {
     const blocks = this.state.blocks
-    const blockLength = this.state.blocks.length
     return (
       <Fragment>
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
@@ -179,7 +178,7 @@ export default class extends Component {
                     <i className="simple-icon-shuffle" />
                   </div>
                 </CardHeader>
-                <a href="/app/nodes">
+                <NavLink to="/app/nodes">
                 <CardBody className="d-flex justify-content-between align-items-center">
                   <CardTitle className="mb-0">
 
@@ -190,7 +189,7 @@ export default class extends Component {
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
-                </a>
+                </NavLink>
               </Card>
             </Colxx>
             <Colxx xl="3" lg="6" className="mb-4 ">
@@ -204,7 +203,7 @@ export default class extends Component {
                       <CardTitle className="mb-0">
                         <i className="iconsminds-link"/> Total Blocks
                       </CardTitle>
-                        {blockLength > 0 ? blocks[0].number.toLocaleString() : "..."}
+                        {blocks.length > 0 ? blocks[0].number.toLocaleString() : "..."}
                       <div className="progress-bar-circle">
 
                       </div>
@@ -244,72 +243,44 @@ export default class extends Component {
             </div>
             </CardTitle>
             <Row>
-            <Colxx sm="6" md="3" className="mb-4">
-              <Card>
-              <CardBody className="side-bar-line">
-                  <CardTitle>
-                    {blockLength > 0 ? <a href={'/app/block/'+(blocks[0].number)}>{blocks[0].number.toLocaleString()}</a> : "..."} <br/>
-                  </CardTitle>
-                  <div className="d-flex justify-content-between">
-                    <p>{blockLength > 0 ? blocks[0].transactions.length : 0} Transactions</p>
-                    <p>{blockLength > 0 ? moment(blocks[0].timestamp*1000).fromNow() : 0}</p>
-                  </div>
-                  <div> Miner: {blockLength > 0 ? <a href={"/app/address/"+blocks[0].miner}>{blocks[0].miner}</a> : "Unknown"}</div>
-                  <div> Reward: {blockLength > 0 ? blocks[0].gasUsed : "0"} XLG</div>
-                </CardBody>
-              </Card>
-            </Colxx>
-
-            <Colxx sm="6" md="3" className="mb-4">
-              <Card>
-              <CardBody className="side-bar-line">
-                  <CardTitle>
-                  {blockLength > 1 ? <a href={'/app/block/'+(blocks[1].number)}>{blocks[1].number.toLocaleString()}</a> : "..."} <br/>
-                  </CardTitle>
-                  <div className="d-flex justify-content-between">
-                    <p>{blockLength > 1 ? blocks[1].transactions.length : 0} Transactions</p>
-                    <p>{blockLength > 1 ? moment(blocks[1].timestamp*1000).fromNow() : 0}</p>
-                  </div>
-                  <div> Miner: {blockLength > 1 ? <a href={"/app/address/"+blocks[1].miner}>{blocks[1].miner}</a> : "Unknown"}</div>
-                  <div> Reward: {blockLength > 1 ? blocks[1].gasUsed : "0"} XLG</div>
-                </CardBody>
-              </Card>
-            </Colxx>
-
-            <Colxx sm="6" md="3" className="mb-4">
-              <Card>
-              <CardBody className="side-bar-line">
-                  <CardTitle>
-                  {blockLength > 2 ? <a href={'/app/block/'+(blocks[2].number)}>{blocks[2].number.toLocaleString()}</a> : "..."} <br/>
-                  </CardTitle>
-                  <div className="d-flex justify-content-between">
-                    <p>{blockLength > 2 ? blocks[2].transactions.length : 0} Transactions</p>
-                    <p>{blockLength > 2 ? moment(blocks[2].timestamp*1000).fromNow() : 0}</p>
-                  </div>
-                  <div> Miner: {blockLength > 2 ? <a href={"/app/address/"+blocks[2].miner}>{blocks[2].miner}</a> : "Unknown"}</div>
-                  <div> Reward: {blockLength > 2 ? blocks[2].gasUsed : "0"} XLG</div>
-                </CardBody>
-              </Card>
-            </Colxx>
-
-            <Colxx sm="6" md="3" className="mb-4" >
-              <Card>
+            { blocks.length > 0 ? blocks.map((block, i) => {
+              return (
+                <Colxx xl="3" lg="6" className="mb-4" key={block+i}>
+                <Card>
                 <CardBody className="side-bar-line">
-                  <CardTitle>
-                  {blockLength > 3 ? <a href={'/app/block/'+(blocks[3].number)}>{blocks[3].number.toLocaleString()}</a> : "..."} <br/>
-                  </CardTitle>
-                  <div className="d-flex justify-content-between">
-                    <p>{blockLength > 3 ? blocks[3].transactions.length : 0} Transactions</p>
-                    <p>{blockLength > 3 ? moment(blocks[3].timestamp*1000).fromNow() : 0}</p>
-                  </div>
-                  <div> Miner: {blockLength > 3 ? <a href={"/app/address/"+blocks[3].miner}>{blocks[3].miner}</a> : "Unknown"}</div>
-                  <div> Reward: {blockLength > 3 ? blocks[3].gasUsed : "0"} XLG</div>
-                </CardBody>
-              </Card>
-            </Colxx>
-
-
-
+                    <CardTitle>
+                      {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
+                    </CardTitle>
+                    <div className="d-flex justify-content-between">
+                      <p>{block.transactions.length} Transactions</p>
+                      <p>{moment(block.timestamp*1000).fromNow()}</p>
+                    </div>
+                    <div> Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></div>
+                    <div> Reward: {block.gasUsed} XLG</div>
+                  </CardBody>
+                </Card>
+              </Colxx>
+              )
+            }) : "" }
+            { blocks.length < 4 ? blocks.map((block, i) => {
+              return (
+                <Colxx xl="3" lg="6" className="mb-4" key={block+i}>
+                <Card>
+                <CardBody className="side-bar-line">
+                    <CardTitle>
+                      {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
+                    </CardTitle>
+                    <div className="d-flex justify-content-between">
+                      <p>{block.transactions.length} Transactions</p>
+                      <p>{moment(block.timestamp*1000).fromNow()}</p>
+                    </div>
+                    <div> Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></div>
+                    <div> Reward: {block.gasUsed} XLG</div>
+                  </CardBody>
+                </Card>
+              </Colxx>
+              )
+            }) : "" }
         </Row>
             </CardBody>
             </Card>
@@ -332,14 +303,13 @@ export default class extends Component {
 
 
         { !this.state.loading ? this.state.transactions.map((tx, i) => {
-                   return <Row>
-                    <Colxx xxs="12" key={tx.id}>
+                   return <Row key={tx.id}>
+                    <Colxx xxs="12">
                       <Card className="card d-flex mb-3 side-bar-line-tx">
                         <div className="d-flex flex-grow-1 min-width-zero">
                         <CardBody className="align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                         <NavLink
                           to="#"
-                          id={`toggler${i}`}
                           className="list-item-heading mb-0 truncate w-40 w-xs-100  mb-1 mt-1"
                         >
 
@@ -350,7 +320,7 @@ export default class extends Component {
                         <span className="color-theme-2"></span>
                       </p>
                       <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                        <a href={'/app/address/'+(tx.blockNumber)}>Block #{tx.blockNumber.toLocaleString()}</a>
+                        <NavLink to={'/app/address/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
                       </p>
                       <div className="w-15 w-xs-100">
                         <Badge pill>
@@ -361,11 +331,11 @@ export default class extends Component {
                       </div>
                       <div className="card-body pt-1">
                         <p className="mb-0">
-                        <a href={'/app/tx/'+tx.hash}>{tx.hash}</a>
+                        <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
                         </p>
-                        <p className="mb-0">
-                        <p><a href={'/app/address/'+(tx.from)}>{tx.from}</a> <i className="iconsminds-arrow-out-right"/> <a href={'/app/address/'+(tx.to)}>{tx.to}</a></p>
-                        </p>
+                        <div className="mb-0">
+                        <p><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink></p>
+                        </div>
                         <br/>
                         <p className="mb-0">
                         {tx.value == 0 ? 0 : web3.utils.fromWei(tx.value.toString(), 'ether')} XLG
