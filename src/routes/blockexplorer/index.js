@@ -35,6 +35,7 @@ export default class extends Component {
     this.state = {
       connected: false,
       loading: false,
+      lastBlockSeconds: 0,
       transactions: [],
       blocks: [],
       latestBlock: 0,
@@ -44,13 +45,29 @@ export default class extends Component {
     this.serverSocket()
   }
 
+  startTimer() {
+    this.timer = setInterval(()=>{
+      const lastBlockSeconds = this.state.lastBlockSeconds + 1
+      this.setState({
+        lastBlockSeconds
+      })
+    },1000)
+  }
+
   componentWillMount() {
     axios.get('http://localhost:2000/api/latestBlocks/4')
       .then(response => {
         this.setState({
           blocks: response.data.data,
-          latestBlock: response.data.data[0].number
+          latestBlock: response.data.data[0].number,
+          lastBlockSeconds: 0
+        })
+    })
 
+    axios.get('http://localhost:2000/api/latestTransactions/25')
+      .then(response => {
+        this.setState({
+          transactions: response.data.data,
         })
     })
 
@@ -124,7 +141,8 @@ export default class extends Component {
       console.log(block)
       self.addBlock(block)
       self.setState({
-        latestBlock: block.number
+        latestBlock: block.number,
+        lastBlockSeconds: 0
       })
     })
   }
@@ -146,9 +164,9 @@ export default class extends Component {
                 </CardHeader>
                 <CardBody className="d-flex justify-content-between align-items-center">
                   <CardTitle className="mb-0">
-                  Average Block Time
+                  <i className="iconsminds-sand-watch-2"/> Average Block Time
                   </CardTitle>
-                  5.00 seconds
+                  5.00 s
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
@@ -161,26 +179,30 @@ export default class extends Component {
                     <i className="simple-icon-shuffle" />
                   </div>
                 </CardHeader>
+                <a href="/app/nodes">
                 <CardBody className="d-flex justify-content-between align-items-center">
                   <CardTitle className="mb-0">
-                    Active Nodes
+
+                    <i className="iconsminds-communication-tower-2"/> Active Nodes
+
                   </CardTitle>
                   {this.state.activeNodes}
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
+                </a>
               </Card>
             </Colxx>
-            <Colxx xl="3" lg="6" className="mb-4">
+            <Colxx xl="3" lg="6" className="mb-4 ">
                   <Card>
-                    <CardHeader className="p-0 position-relative">
+                    <CardHeader className="p-0 position-relative ">
                       <div className="position-absolute handle card-icon">
                         <i className="simple-icon-shuffle" />
                       </div>
                     </CardHeader>
                     <CardBody className="d-flex justify-content-between align-items-center">
                       <CardTitle className="mb-0">
-                        Total Blocks
+                        <i className="iconsminds-link"/> Total Blocks
                       </CardTitle>
                         {blockLength > 0 ? blocks[0].number.toLocaleString() : "..."}
                       <div className="progress-bar-circle">
@@ -198,7 +220,7 @@ export default class extends Component {
                     </CardHeader>
                     <CardBody className="d-flex justify-content-between align-items-center">
                       <CardTitle className="mb-0">
-                      Total Contracts
+                        <i className="iconsminds-testimonal"/> Total Contracts
                       </CardTitle>
                       {this.state.totalContracts}
 
@@ -207,8 +229,8 @@ export default class extends Component {
                     </CardBody>
                   </Card>
                 </Colxx>
-          </Row>
 
+          </Row>
 
 
           <Card>
@@ -228,8 +250,12 @@ export default class extends Component {
                   <CardTitle>
                     {blockLength > 0 ? <a href={'/app/block/'+(blocks[0].number)}>{blocks[0].number.toLocaleString()}</a> : "..."} <br/>
                   </CardTitle>
-                  <div>{blockLength > 0 ? blocks[0].transactions.length : 0} Transactions</div>
-                  <div>{blockLength > 0 ? moment(blocks[0].timestamp*1000).fromNow() : 0}</div>
+                  <div className="d-flex justify-content-between">
+                    <p>{blockLength > 0 ? blocks[0].transactions.length : 0} Transactions</p>
+                    <p>{blockLength > 0 ? moment(blocks[0].timestamp*1000).fromNow() : 0}</p>
+                  </div>
+                  <div> Miner: {blockLength > 0 ? <a href={"/app/address/"+blocks[0].miner}>{blocks[0].miner}</a> : "Unknown"}</div>
+                  <div> Reward: {blockLength > 0 ? blocks[0].gasUsed : "0"} XLG</div>
                 </CardBody>
               </Card>
             </Colxx>
@@ -240,8 +266,12 @@ export default class extends Component {
                   <CardTitle>
                   {blockLength > 1 ? <a href={'/app/block/'+(blocks[1].number)}>{blocks[1].number.toLocaleString()}</a> : "..."} <br/>
                   </CardTitle>
-                  <div>{blockLength > 1 ? blocks[1].transactions.length : 0} Transactions</div>
-                  <div>{blockLength > 1 ? moment(blocks[1].timestamp*1000).fromNow() : 0}</div>
+                  <div className="d-flex justify-content-between">
+                    <p>{blockLength > 1 ? blocks[1].transactions.length : 0} Transactions</p>
+                    <p>{blockLength > 1 ? moment(blocks[1].timestamp*1000).fromNow() : 0}</p>
+                  </div>
+                  <div> Miner: {blockLength > 1 ? <a href={"/app/address/"+blocks[1].miner}>{blocks[1].miner}</a> : "Unknown"}</div>
+                  <div> Reward: {blockLength > 1 ? blocks[1].gasUsed : "0"} XLG</div>
                 </CardBody>
               </Card>
             </Colxx>
@@ -252,8 +282,12 @@ export default class extends Component {
                   <CardTitle>
                   {blockLength > 2 ? <a href={'/app/block/'+(blocks[2].number)}>{blocks[2].number.toLocaleString()}</a> : "..."} <br/>
                   </CardTitle>
-                  <div>{blockLength > 2 ? blocks[2].transactions.length : 0} Transactions</div>
-                  <div>{blockLength > 2 ? moment(blocks[2].timestamp*1000).fromNow() : 0}</div>
+                  <div className="d-flex justify-content-between">
+                    <p>{blockLength > 2 ? blocks[2].transactions.length : 0} Transactions</p>
+                    <p>{blockLength > 2 ? moment(blocks[2].timestamp*1000).fromNow() : 0}</p>
+                  </div>
+                  <div> Miner: {blockLength > 2 ? <a href={"/app/address/"+blocks[2].miner}>{blocks[2].miner}</a> : "Unknown"}</div>
+                  <div> Reward: {blockLength > 2 ? blocks[2].gasUsed : "0"} XLG</div>
                 </CardBody>
               </Card>
             </Colxx>
@@ -264,8 +298,12 @@ export default class extends Component {
                   <CardTitle>
                   {blockLength > 3 ? <a href={'/app/block/'+(blocks[3].number)}>{blocks[3].number.toLocaleString()}</a> : "..."} <br/>
                   </CardTitle>
-                  <div>{blockLength > 3 ? blocks[3].transactions.length : 0} Transactions</div>
-                  <div>{blockLength > 3 ? moment(blocks[3].timestamp*1000).fromNow() : 0}</div>
+                  <div className="d-flex justify-content-between">
+                    <p>{blockLength > 3 ? blocks[3].transactions.length : 0} Transactions</p>
+                    <p>{blockLength > 3 ? moment(blocks[3].timestamp*1000).fromNow() : 0}</p>
+                  </div>
+                  <div> Miner: {blockLength > 3 ? <a href={"/app/address/"+blocks[3].miner}>{blocks[3].miner}</a> : "Unknown"}</div>
+                  <div> Reward: {blockLength > 3 ? blocks[3].gasUsed : "0"} XLG</div>
                 </CardBody>
               </Card>
             </Colxx>
@@ -312,7 +350,7 @@ export default class extends Component {
                         <span className="color-theme-2"></span>
                       </p>
                       <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                        Block #{tx.blockNumber.toLocaleString()}
+                        <a href={'/app/address/'+(tx.blockNumber)}>Block #{tx.blockNumber.toLocaleString()}</a>
                       </p>
                       <div className="w-15 w-xs-100">
                         <Badge pill>
@@ -330,11 +368,11 @@ export default class extends Component {
                         </p>
                         <br/>
                         <p className="mb-0">
-                        {web3.utils.fromWei(tx.value, 'ether')} XLG
+                        {tx.value == 0 ? 0 : web3.utils.fromWei(tx.value.toString(), 'ether')} XLG
                         </p>
                         <p className="mb-0">
                         <small>
-                        {web3.utils.fromWei(tx.gasPrice, 'ether')} GAS
+                        {tx.gasPrice == 0 ? 0 : web3.utils.fromWei(tx.gasPrice.toString(), 'ether')} GAS
                         </small>
                         </p>
                       </div>
