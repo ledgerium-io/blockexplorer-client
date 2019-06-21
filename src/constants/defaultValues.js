@@ -1,5 +1,5 @@
 export const defaultMenuType = 'menu-hidden'; // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
-export const defaultStartPath = '/app/dashboards/blockexplorer';
+export const defaultStartPath = '/app/blockexplorer';
 export const subHiddenBreakpoint=1440;
 export const menuHiddenBreakpoint = 768;
 export const defaultLocale='en';
@@ -18,5 +18,5 @@ export const firebaseConfig = {
 };
 
 
-export const searchPath = "/app/pages/search"
+export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
