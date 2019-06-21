@@ -252,7 +252,7 @@ class TopNav extends Component {
           </UncontrolledDropdown>
         </div>
 
-        <a className="navbar-logo" href="/app/dashboards/blockexplorer">
+        <a className="navbar-logo" href="/app/blockexplorer">
         <img alt="Logo" width="75px" src="/assets/img/Ledgerium_logo_blue.svg" />
         </a>
 
