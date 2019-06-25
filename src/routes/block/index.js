@@ -64,6 +64,7 @@ export default class extends Component {
       .then(response => {
         if (response.data.data.number === 0) return;
         if (!response.data.success) return;
+        console.log(response.data.data)
         this.setState({
           block: response.data.data,
           loading: false
@@ -167,21 +168,18 @@ export default class extends Component {
                             <span className="color-theme-2"></span>
                           </p>
                           <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                            Block #{tx.blockNumber.toLocaleString()}
                           </p>
                           <div className="w-15 w-xs-100">
                             <Badge pill>
-                              {tx.transaction_type}
                             </Badge>
                           </div>
                           </CardBody>
                           </div>
                           <div className="card-body pt-1">
                             <p className="mb-0">
-                            <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
+                            <NavLink to={'/app/tx/'+tx}>{tx}</NavLink>
                             </p>
                             <p className="mb-0">
-                            {tx.from} <i className="iconsminds-arrow-out-right"/> {tx.to}
                             </p>
                             <br/>
                           </div>
