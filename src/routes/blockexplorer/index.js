@@ -64,7 +64,7 @@ export default class extends Component {
         })
     })
 
-    axios.get('http://localhost:2000/api/latestTransactions/25')
+    axios.get('http://localhost:2000/api/latestTransactions/20')
       .then(response => {
         this.setState({
           transactions: response.data.data,
@@ -237,9 +237,11 @@ export default class extends Component {
             <CardTitle>
             Blocks
             <div className="float-right float-none-xs mt-2">
+            <NavLink to={'/app/blocks'}>
               <Button color="primary" size="sm" className="mb-2">
                 View all Blocks <i className="iconsminds-arrow-out-right"/>
               </Button>
+            </NavLink>
             </div>
             </CardTitle>
             <Row>
@@ -280,7 +282,7 @@ export default class extends Component {
                 </Card>
               </Colxx>
               )
-            }) : "" }
+            }) : '' }
         </Row>
             </CardBody>
             </Card>
@@ -293,9 +295,11 @@ export default class extends Component {
             <CardTitle>
             Transactions
             <div className="float-right float-none-xs mt-2">
+            <NavLink to={'/app/transactions'}>
               <Button color="primary" size="sm" className="mb-2">
                 View all Transactions <i className="iconsminds-arrow-out-right"/>
               </Button>
+            </NavLink>
             </div>
             </CardTitle>
       <Row>
@@ -320,7 +324,7 @@ export default class extends Component {
                         <span className="color-theme-2"></span>
                       </p>
                       <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                        <NavLink to={'/app/address/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
+                        <NavLink to={'/app/block/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
                       </p>
                       <div className="w-15 w-xs-100">
                         <Badge pill>
@@ -349,7 +353,7 @@ export default class extends Component {
                       </Card>
                     </Colxx>
                    </Row>
-                }) : ''
+                }) : 'Loading . . .'
               }
 
     </Colxx>
