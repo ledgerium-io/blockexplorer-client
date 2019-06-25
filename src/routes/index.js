@@ -6,7 +6,9 @@ import Sidebar from 'Containers/Sidebar';
 
 import blockexplorer from './blockexplorer';
 import block from './block';
+import blocks from './blocks';
 import transaction from './transaction';
+import transactions from './transactions'
 import address from './address';
 import nodes from './nodes';
 
@@ -24,10 +26,12 @@ class MainApp extends Component {
 						<Switch>
 							<Route path={`${match.url}/blockexplorer`} exact component={blockexplorer} />
 							<Route path={`${match.url}/block/:block`} component={block} />
+							<Route path={`${match.url}/blocks`} component={blocks} />
 							<Route path={`${match.url}/tx/:txn`} component={transaction} />
+							<Route path={`${match.url}/transactions`} component={transactions} />
 							<Route path={`${match.url}/address/:address`} component={address} />
 							<Route path={`${match.url}/nodes`} component={nodes} />
-							<Redirect to="/error" />
+							<Redirect to="/app/blockexplorer" />
 						</Switch>
 					</div>
 				</main>
