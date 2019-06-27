@@ -4,6 +4,8 @@ import {
   ZoomableGroup,
   Geographies,
   Geography,
+  Markers,
+  Marker,
 } from "react-simple-maps"
 import worldData from './world-50m.json'
 const wrapperStyles = {
@@ -13,7 +15,15 @@ const wrapperStyles = {
 }
 
 class BasicMap extends Component {
+
   render() {
+
+    const markers = [
+    { markerOffset: -25, name: "", coordinates: [144.9631, -37.8136] },
+    { markerOffset: -25, name: "", coordinates: [114.1694, 22.3193] },
+    { markerOffset: 35, name: "", coordinates: [-73.935242, 40.7128]},
+    { markerOffset: 35, name: "", coordinates: [-70.6693, -33.4489] },
+  ]
     return (
       <div style={wrapperStyles}>
         <ComposableMap
@@ -57,7 +67,43 @@ class BasicMap extends Component {
                   }}
                 />
               ))}
+
             </Geographies>
+            <Markers>
+            {markers.map((marker, i) => (
+              <Marker
+                key={i}
+                marker={marker}
+                style={{
+                  default: { fill: "#145388" },
+                  hover: { fill: "#FFFFFF" },
+                  pressed: { fill: "#FFFFFF" },
+                }}
+                >
+                <circle
+                  cx={0}
+                  cy={0}
+                  r={10}
+                  style={{
+                    stroke: "#145388",
+                    strokeWidth: 4,
+                    opacity: 0.9,
+                  }}
+                />
+                <text
+                  textAnchor="middle"
+                  y={marker.markerOffset}
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fill: "#607D8B",
+                  }}
+                  >
+                  {marker.name}
+                </text>
+              </Marker>
+            ))}
+            </Markers>
+
           </ZoomableGroup>
         </ComposableMap>
       </div>
