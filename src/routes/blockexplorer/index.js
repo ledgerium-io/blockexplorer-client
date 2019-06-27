@@ -22,6 +22,7 @@ moment.updateLocale('en', {
 });
 import { Colxx, Separator } from "Components/CustomBootstrap";
 import BreadcrumbContainer from "Components/BreadcrumbContainer";
+import WorldMap from "Components/map";
 import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
@@ -55,7 +56,7 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:2000/api/latestBlocks/4')
+    axios.get('http://localhost:2000/api/latestBlocks/5')
       .then(response => {
         this.setState({
           blocks: response.data.data,
@@ -64,7 +65,7 @@ export default class extends Component {
         })
     })
 
-    axios.get('http://localhost:2000/api/latestTransactions/20')
+    axios.get('http://localhost:2000/api/latestTransactions/5')
       .then(response => {
         this.setState({
           transactions: response.data.data,
@@ -153,85 +154,76 @@ export default class extends Component {
       <Fragment>
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
         <Separator className="mb-5" />
-        <Row>
-          <Colxx xl="3" lg="6" className="mb-4">
-              <Card>
-                <CardHeader className="p-0 position-relative">
-                  <div className="position-absolute handle card-icon">
-                    <i className="simple-icon-shuffle" />
-                  </div>
-                </CardHeader>
-                <CardBody className="d-flex justify-content-between align-items-center">
-                  <CardTitle className="mb-0">
-                  <i className="iconsminds-sand-watch-2"/> Average Block Time
-                  </CardTitle>
-                  5.00 s
-                  <div className="progress-bar-circle">
-                  </div>
-                </CardBody>
-              </Card>
-            </Colxx>
-            <Colxx xl="3" lg="6" className="mb-4">
-              <Card>
-                <CardHeader className="p-0 position-relative">
-                  <div className="position-absolute handle card-icon">
-                    <i className="simple-icon-shuffle" />
-                  </div>
-                </CardHeader>
-                <NavLink to="/app/nodes">
-                <CardBody className="d-flex justify-content-between align-items-center">
-                  <CardTitle className="mb-0">
-
-                    <i className="iconsminds-communication-tower-2"/> Active Nodes
-
-                  </CardTitle>
-                  {this.state.activeNodes}
-                  <div className="progress-bar-circle">
-                  </div>
-                </CardBody>
-                </NavLink>
-              </Card>
-            </Colxx>
-            <Colxx xl="3" lg="6" className="mb-4 ">
-                  <Card>
-                    <CardHeader className="p-0 position-relative ">
-                      <div className="position-absolute handle card-icon">
-                        <i className="simple-icon-shuffle" />
-                      </div>
-                    </CardHeader>
-                    <CardBody className="d-flex justify-content-between align-items-center">
-                      <CardTitle className="mb-0">
-                        <i className="iconsminds-link"/> Total Blocks
-                      </CardTitle>
-                        {blocks.length > 0 ? blocks[0].number.toLocaleString() : "..."}
-                      <div className="progress-bar-circle">
-
-                      </div>
-                    </CardBody>
-                  </Card>
+          <Row>
+            <Colxx md="12">
+            <Card>
+              <Row>
+                <Colxx md="4">
+                  <Row>
+                    <Colxx md="12">
+                      <CardBody>
+                        <CardTitle>
+                          <NavLink to={'/app/block/' + (blocks.length > 0 ? blocks[0].number : "#")}>
+                          <small>Best Block</small> #{blocks.length > 0 ? blocks[0].number.toLocaleString() : ""}
+                          </NavLink>
+                        </CardTitle>
+                      </CardBody>
+                    </Colxx>
+                    <Colxx md="12">
+                      <CardBody>
+                        <CardTitle>
+                          <small>Last Block</small> 8h ago (5.00s average)
+                        </CardTitle>
+                      </CardBody>
+                    </Colxx>
+                  </Row>
                 </Colxx>
-                <Colxx xl="3" lg="6" className="mb-4">
-                  <Card>
-                    <CardHeader className="p-0 position-relative">
-                      <div className="position-absolute handle card-icon">
-                        <i className="simple-icon-shuffle" />
-                      </div>
-                    </CardHeader>
-                    <CardBody className="d-flex justify-content-between align-items-center">
-                      <CardTitle className="mb-0">
-                        <i className="iconsminds-testimonal"/> Total Contracts
+                <Colxx md="4">
+                <Row>
+                  <Colxx md="6">
+                  <CardBody>
+                    <CardTitle>
+                      <small>Gas Price</small> 1 gwei
                       </CardTitle>
-                      {this.state.totalContracts}
-
-                      <div className="progress-bar-circle">
-                      </div>
                     </CardBody>
-                  </Card>
+                  </Colxx>
+                  <Colxx md="6">
+                  <CardBody>
+                    <NavLink to={'/app/nodes/'}>
+                      <CardTitle>
+                        <small>Nodes Online</small> {this.state.activeNodes}
+                      </CardTitle>
+                    </NavLink>
+                    </CardBody>
+                  </Colxx>
+                  <Colxx md="6">
+                    <CardBody>
+                      <CardTitle>
+                        <small>Gas Limit</small> 900 gas
+                      </CardTitle>
+                    </CardBody>
+                  </Colxx>
+                  <Colxx md="6">
+                  <CardBody>
+                    <CardTitle>
+                    <small>Total Contracts</small> {this.state.totalContracts}
+                      </CardTitle>
+                    </CardBody>
+                  </Colxx>
+                </Row>
+                </Colxx>
+                <Colxx md="4">
+                <WorldMap/>
                 </Colxx>
 
+              </Row>
+            </Card>
+            </Colxx>
           </Row>
+          <br/><br/>
 
-
+          <Row>
+          <Colxx md="6">
           <Card>
           <CardBody>
             <CardTitle>
@@ -244,12 +236,10 @@ export default class extends Component {
             </NavLink>
             </div>
             </CardTitle>
-            <Row>
             { blocks.length > 0 ? blocks.map((block, i) => {
               return (
-                <Colxx xl="3" lg="6" className="mb-4" key={block+i}>
                 <Card>
-                <CardBody className="side-bar-line">
+                <CardBody className="side-bar-line-tx">
                     <CardTitle>
                       {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
                     </CardTitle>
@@ -257,42 +247,24 @@ export default class extends Component {
                       <p>{block.transactions.length} Transactions</p>
                       <p>{moment(block.timestamp*1000).fromNow()}</p>
                     </div>
-                    <div> Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></div>
-                    <div> Reward: {block.gasUsed} XLG</div>
-                  </CardBody>
-                </Card>
-              </Colxx>
-              )
-            }) : "" }
-            { blocks.length < 4 ? blocks.map((block, i) => {
-              return (
-                <Colxx xl="3" lg="6" className="mb-4" key={block+i}>
-                <Card>
-                <CardBody className="side-bar-line">
-                    <CardTitle>
-                      {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
-                    </CardTitle>
                     <div className="d-flex justify-content-between">
-                      <p>{block.transactions.length} Transactions</p>
-                      <p>{moment(block.timestamp*1000).fromNow()}</p>
+                      <p>Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></p>
+                      <p>Reward: {block.gasUsed} XLG</p>
                     </div>
-                    <div> Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></div>
-                    <div> Reward: {block.gasUsed} XLG</div>
                   </CardBody>
                 </Card>
-              </Colxx>
               )
-            }) : '' }
-        </Row>
+            }) : "Loading . . ." }
             </CardBody>
             </Card>
+            </Colxx>
 
-
-
-            <br/><br/>
+            <Colxx md="6">
             <Card>
             <CardBody>
             <CardTitle>
+
+
             Transactions
             <div className="float-right float-none-xs mt-2">
             <NavLink to={'/app/transactions'}>
@@ -302,64 +274,39 @@ export default class extends Component {
             </NavLink>
             </div>
             </CardTitle>
-      <Row>
-    <Colxx sm="12" className="mb-4">
-
-
         { !this.state.loading ? this.state.transactions.map((tx, i) => {
-                   return <Row key={tx.id}>
-                    <Colxx xxs="12">
-                      <Card className="card d-flex mb-3 side-bar-line-tx">
-                        <div className="d-flex flex-grow-1 min-width-zero">
-                        <CardBody className="align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                        <NavLink
-                          to="#"
-                          className="list-item-heading mb-0 truncate w-40 w-xs-100  mb-1 mt-1"
-                        >
-
-                        { " " }
-                        <span className="align-middle d-inline-block color-theme-1">TX</span>
-                      </NavLink>
-                      <p className="mb-1 text-muted text-small w-15 w-xs-100 ">
-                        <span className="color-theme-2"></span>
-                      </p>
-                      <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                        <NavLink to={'/app/block/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
-                      </p>
-                      <div className="w-15 w-xs-100">
-                        <Badge pill>
-                          {tx.transaction_type}
-                        </Badge>
-                      </div>
+                   return <Card>
+                   <CardBody className="side-bar-line-tx">
+                       <CardTitle>
+                         {<NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>}
+                       </CardTitle>
+                       <div className="d-flex justify-content-between">
+                        <p></p>
+                        <p><small><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink><i className="iconsminds-arrow-out-right"/><NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink></small></p>
+                        <p></p>
+                       </div>
+                       <div className="d-flex justify-content-between">
+                         <p>
+                         {tx.value} XLG
+                         </p>
+                         <p>
+                         <small>
+                         {tx.gasPrice == 0 ? 0 : web3.utils.fromWei(tx.gasPrice.toString(), 'ether')} GAS
+                         </small>
+                         </p>
+                         <p>
+                         Block #{tx.blockNumber.toLocaleString()}
+                         </p>
+                       </div>
                       </CardBody>
-                      </div>
-                      <div className="card-body pt-1">
-                        <p className="mb-0">
-                        <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
-                        </p>
-                        <div className="mb-0">
-                        <p><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink></p>
-                        </div>
-                        <br/>
-                        <p className="mb-0">
-                        {tx.value == 0 ? 0 : web3.utils.fromWei(tx.value.toString(), 'ether')} XLG
-                        </p>
-                        <p className="mb-0">
-                        <small>
-                        {tx.gasPrice == 0 ? 0 : web3.utils.fromWei(tx.gasPrice.toString(), 'ether')} GAS
-                        </small>
-                        </p>
-                      </div>
                       </Card>
-                    </Colxx>
-                   </Row>
                 }) : 'Loading . . .'
               }
 
+              </CardBody>
+              </Card>
     </Colxx>
     </Row>
-    </CardBody>
-    </Card>
   </Fragment>
     );
   }
