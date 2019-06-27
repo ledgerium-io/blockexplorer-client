@@ -60,7 +60,7 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get(`/api/block/${this.props.match.params.block}`)
+    axios.get(`http://localhost:2000/api/block/${this.props.match.params.block}`)
       .then(response => {
         if (response.data.data.number === 0) return;
         if (!response.data.success) return;
