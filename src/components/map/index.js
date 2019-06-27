@@ -25,7 +25,7 @@ class BasicMap extends Component {
           height={551}
           style={{
             width: "100%",
-            height: "250px",
+            height: "225px",
           }}
           >
           <ZoomableGroup center={[0,20]} disablePanning>
