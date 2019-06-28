@@ -150,6 +150,7 @@ export default class extends Component {
 
   render() {
     const blocks = this.state.blocks
+    const transactions = this.state.transactions
     return (
       <Fragment>
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
@@ -274,7 +275,7 @@ export default class extends Component {
             </NavLink>
             </div>
             </CardTitle>
-        { !this.state.loading ? this.state.transactions.map((tx, i) => {
+        { transactions.length > 0 ? this.state.transactions.map((tx, i) => {
                    return <Card>
                    <CardBody className="side-bar-line-tx">
                        <CardTitle>
