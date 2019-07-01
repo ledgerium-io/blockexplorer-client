@@ -1,25 +1,7 @@
 import React, { Component, Fragment } from "react";
 import IntlMessages from "Util/IntlMessages";
 import { Row, Card, CardBody,CardHeader, CardTitle, Table, Button, Jumbotron, Badge } from "reactstrap";
-import moment from 'moment'
-moment.updateLocale('en', {
-    relativeTime : {
-        future: "in %s",
-        past:   "%s ago",
-        s  : '%d seconds',
-        ss : '%d seconds',
-        m:  "a minute",
-        mm: "%d minutes",
-        h:  "an hour",
-        hh: "%d hours",
-        d:  "a day",
-        dd: "%d days",
-        M:  "a month",
-        MM: "%d months",
-        y:  "a year",
-        yy: "%d years"
-    }
-});
+
 import { Colxx, Separator } from "Components/CustomBootstrap";
 import BreadcrumbContainer from "Components/BreadcrumbContainer";
 import io from 'socket.io-client';
@@ -50,57 +32,29 @@ export default class extends Component {
         v: "",
         r: "",
         s: "",
-        transactionType: "Public",
-        TimeElapsed: 1560225937
+        transactionType: "Public"
       },
-      block: {
-        number: 0,
-        hash: "",
-        parentHash: "",
-        nonce: "",
-        sha3Uncles: "",
-        logsBloom: "",
-        transactionsRoot: "",
-        stateRoot: "",
-        miner: "",
-        difficulty: 0,
-        totalDifficulty: 0,
-        extraData: "",
-        size: 0,
-        gasLimit: 0,
-        gasUsed: 0,
-        timestamp: 0,
-        transactions: [ ],
-        uncles: null,
-        TimeElapsed: 1560219399
-      }
     }
   }
 
   componentWillMount() {
-    axios.get(`http://testnet.ledgerium.net:9999/txn/${this.props.match.params.txn}`)
+    axios.get(`http://localhost:2000/api/tx/${this.props.match.params.txn}`)
       .then(response => {
-        if (response.data.blockNumber === 0) return;
+        if(!response.data.success) return
         this.setState({
-          tx: response.data,
-          loading: false
+          tx: response.data.data
         })
-        axios.get(`http://testnet.ledgerium.net:9999/block/${response.blockNumber}`)
-          .then(result => {
-            console.log(result.data)
-            this.setState({
-              block: result.data
-            })
-          })
+      })
+      .catch(error => {
+          console.log(error)
+      })
 
-    })
 
   }
 
 
   render() {
     const tx = this.state.tx
-    const block = this.state.block
     const timestamp = Date.now()
     return (
       <Fragment>
@@ -127,17 +81,16 @@ export default class extends Component {
                   Transaction Details
                   </CardTitle>
                   <br/>
-                  <p><strong> {tx.hash}</strong></p>
+                  <p><strong> {tx.blockHash}</strong></p>
                   <p><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/dashboards/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> Transaction </span>
                     <span> Success </span>
-                    <span> {moment(block.timestamp*1000).fromNow()} </span>
                   </div>
                   <p></p>
                   <Table>
                     <tbody>
-                      <tr><td>Block Number</td><td><NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber}</NavLink></td></tr>
+                      <tr><td>Block Number</td><td><NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink></td></tr>
                       <tr><td>Nonce</td><td>{tx.nonce}</td></tr>
                       <tr><td>TX Fee</td><td>{tx.gasPrice}</td></tr>
 
@@ -159,9 +112,9 @@ export default class extends Component {
                 </CardHeader>
                 <CardBody className="d-flex justify-content-between align-items-center">
                   <CardTitle className="mb-0">
-                    XLG Value
+                    Tx Value
                   </CardTitle>
-                  {tx.value}
+                  {tx.value} XLG
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
