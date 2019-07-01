@@ -299,7 +299,7 @@ export default class extends Component {
                          </small>
                          </p>
                          <p>
-                         Block #{tx.blockNumber.toLocaleString()}
+                         Block #{<NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink>}
                          </p>
                        </div>
                       </CardBody>
