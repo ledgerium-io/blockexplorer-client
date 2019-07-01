@@ -107,7 +107,7 @@ export default class extends Component {
                   <CardTitle className="mb-0">
                     Balance
                   </CardTitle>
-                  {address.balance}
+                  {address.balance} XLG
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
@@ -117,13 +117,12 @@ export default class extends Component {
 
           { !this.state.loading ? this.state.address.transactions.map((tx, i) => {
                      return <Row>
-                      <Colxx md="12" key={tx.id}>
+                      <Colxx md="12" key={i}>
                         <Card className="card d-flex mb-3 side-bar-line-tx">
                           <div className="d-flex flex-grow-1 min-width-zero">
                           <CardBody className="align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                           <NavLink
                             to="#"
-                            id={`toggler${i}`}
                             className="list-item-heading mb-0 truncate w-40 w-xs-100  mb-1 mt-1"
                           >
 
@@ -134,7 +133,7 @@ export default class extends Component {
                           <span className="color-theme-2"></span>
                         </p>
                         <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                          Block #{tx.blockNumber.toLocaleString()}
+                          Block #{tx.blockNumber}
                         </p>
                         <div className="w-15 w-xs-100">
                           <Badge pill>
