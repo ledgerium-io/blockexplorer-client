@@ -37,6 +37,7 @@ export default class extends Component {
       connected: false,
       loading: false,
       lastBlockSeconds: 0,
+      averageBlockTime: 5,
       transactions: [],
       blocks: [],
       latestBlock: 0,
@@ -44,6 +45,7 @@ export default class extends Component {
       activeNode: 0
     }
     this.serverSocket()
+    this.startTimer()
   }
 
   startTimer() {
@@ -73,11 +75,11 @@ export default class extends Component {
     })
 
 
-    axios.get('http://testnet.ledgerium.net:9999/contractCount')
+    axios.get('http://localhost:2000/api/contractCount')
       .then(response => {
         console.log(response.data)
         this.setState({
-          totalContracts: response.data.totalContracts
+          totalContracts: response.data.data
         })
     })
     axios.get('http://localhost:2000/api/peers')
@@ -141,6 +143,7 @@ export default class extends Component {
     socket.on('newBlockHeaders', (block) => {
       console.log(block)
       self.addBlock(block)
+      console.log(block)
       self.setState({
         latestBlock: block.number,
         lastBlockSeconds: 0
@@ -173,7 +176,7 @@ export default class extends Component {
                     <Colxx md="12">
                       <CardBody>
                         <CardTitle>
-                          <small>Last Block</small> 8h ago (5.00s average)
+                          <small>Last Block</small> {this.state.lastBlockSeconds}s ago <small>(Average {this.state.averageBlockTime}s)</small>
                         </CardTitle>
                       </CardBody>
                     </Colxx>
