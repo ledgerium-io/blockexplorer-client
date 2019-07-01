@@ -101,7 +101,7 @@ export default class extends Component {
                   Block Details
                   </CardTitle>
                   <br/>
-                  <p><strong> Block Height: </strong> {block.number}</p>
+                  <p><strong> Block Height: </strong> {block.number.toLocaleString()}</p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> {block.transactions.length} Transactions </span>
                     <span> {block.size.toLocaleString()} bytes </span>
@@ -140,7 +140,7 @@ export default class extends Component {
                   <CardTitle className="mb-0">
                     Miner
                   </CardTitle>
-                  {block.miner}
+                  <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink>
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
