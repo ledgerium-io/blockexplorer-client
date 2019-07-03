@@ -116,7 +116,7 @@ class BasicMap extends Component {
                   r={10}
                   style={{
                     stroke: "#145388",
-                    strokeWidth: 4,
+                    strokeWidth: 6,
                     opacity: 0.9,
                   }}
                 />
