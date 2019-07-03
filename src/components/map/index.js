@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import axios from 'axios'
 import {
   ComposableMap,
   ZoomableGroup,
@@ -15,15 +16,44 @@ const wrapperStyles = {
 }
 
 class BasicMap extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      markers: []
+    }
+  }
+
+  componentWillMount() {
+    axios.get('http://localhost:2000/api/nodeMap')
+      .then(response => {
+        const nodes = response.data.data
+        const markers = []
+        for(let i=0; i<nodes.length; i++) {
+          if(nodes[i].location == null) continue;
+          markers.push({
+            markerOffset: Math.floor(Math.random()*(50-(-30)+1)+(-30)),
+            name: nodes[i].location.city,
+            coordinates: [nodes[i].location.ll[1], nodes[i].location.ll[0]]
+
+          })
+        }
+        this.setState({markers})
+      })
+      .catch(console.log)
+  }
+
+
 
   render() {
 
-    const markers = [
-    { markerOffset: -25, name: "", coordinates: [144.9631, -37.8136] },
-    { markerOffset: -25, name: "", coordinates: [114.1694, 22.3193] },
-    { markerOffset: 35, name: "", coordinates: [-73.935242, 40.7128]},
-    { markerOffset: 35, name: "", coordinates: [-70.6693, -33.4489] },
-  ]
+  //   const markers = [
+  //   { markerOffset: -25, name: "asdasd", coordinates: [144.9631, -37.8136] },
+  //   { markerOffset: -25, name: "", coordinates: [114.1694, 22.3193] },
+  //   { markerOffset: 35, name: "", coordinates: [-73.935242, 40.7128]},
+  //   { markerOffset: 35, name: "", coordinates: [-70.6693, -33.4489] },
+  // ]
+
+  const {markers} = this.state
     return (
       <div style={wrapperStyles}>
         <ComposableMap
