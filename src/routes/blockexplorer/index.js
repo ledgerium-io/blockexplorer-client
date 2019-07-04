@@ -187,7 +187,7 @@ export default class extends Component {
                   <Colxx md="6">
                   <CardBody>
                     <CardTitle>
-                      <small>Gas Price</small> 1 gwei
+                      <small>Gas Price</small> {blocks[0] ? blocks[0].gasUsed : 0} gwei
                       </CardTitle>
                     </CardBody>
                   </Colxx>
@@ -203,7 +203,7 @@ export default class extends Component {
                   <Colxx md="6">
                     <CardBody>
                       <CardTitle>
-                        <small>Gas Limit</small> 900 gas
+                        <small>Gas Limit</small> {blocks[0] ? blocks[0].gasLimit : 0} gas
                       </CardTitle>
                     </CardBody>
                   </Colxx>
