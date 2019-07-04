@@ -93,11 +93,14 @@ export default class extends Component {
                       <tr><td>Block Number</td><td><NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink></td></tr>
                       <tr><td>Nonce</td><td>{tx.nonce}</td></tr>
                       <tr><td>TX Fee</td><td>{tx.gasPrice}</td></tr>
-
+                      <tr><td>v</td><td>{tx.v}</td></tr>
+                      <tr><td>r</td><td>{tx.r}</td></tr>
+                      <tr><td>s</td><td>{tx.s}</td></tr>
                     </tbody>
                   </Table>
-
-
+                  <CardTitle className="mb-0">Raw input</CardTitle>
+                  <br/> 
+                  {tx.input}
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
