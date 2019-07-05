@@ -42,7 +42,8 @@ export default class extends Component {
       blocks: [],
       latestBlock: 0,
       totalContracts: 0,
-      activeNode: 0
+      activeNode: 0,
+      blockReward: 0,
     }
     this.serverSocket()
     this.startTimer()
@@ -66,6 +67,14 @@ export default class extends Component {
           lastBlockSeconds: 0
         })
     })
+
+    axios.get('http://localhost:2000/api/blockReward')
+      .then(response => {
+        console.log(response)
+        this.setState({
+          blockReward: response.data.data
+        })
+      })
 
     axios.get('http://localhost:2000/api/latestTransactions/5')
       .then(response => {
@@ -176,21 +185,24 @@ export default class extends Component {
                     <Colxx md="12">
                       <CardBody>
                         <CardTitle>
-                          <small>Last Block</small> {this.state.lastBlockSeconds}s ago <small>(Average {this.state.averageBlockTime}s)</small>
+                          <small>Gas Limit</small> {blocks[0] ? blocks[0].gasLimit : 0} gas
                         </CardTitle>
                       </CardBody>
                     </Colxx>
+
+
                   </Row>
                 </Colxx>
                 <Colxx md="4">
                 <Row>
-                  <Colxx md="6">
+                <Colxx md="6">
                   <CardBody>
                     <CardTitle>
-                      <small>Gas Price</small> {blocks[0] ? blocks[0].gasUsed : 0} gwei
-                      </CardTitle>
-                    </CardBody>
-                  </Colxx>
+                      <small>Last Block</small> {this.state.lastBlockSeconds}s ago <small>(Average {this.state.averageBlockTime}s)</small>
+                    </CardTitle>
+                  </CardBody>
+                </Colxx>
+
                   <Colxx md="6">
                   <CardBody>
                     <NavLink to={'/app/nodes/'}>
@@ -200,10 +212,11 @@ export default class extends Component {
                     </NavLink>
                     </CardBody>
                   </Colxx>
+
                   <Colxx md="6">
-                    <CardBody>
-                      <CardTitle>
-                        <small>Gas Limit</small> {blocks[0] ? blocks[0].gasLimit : 0} gas
+                  <CardBody>
+                    <CardTitle>
+                      <small>Gas Price</small> 1 gwei
                       </CardTitle>
                     </CardBody>
                   </Colxx>
@@ -253,7 +266,7 @@ export default class extends Component {
                     </div>
                     <div className="d-flex justify-content-between">
                       <p>Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></p>
-                      <p>Reward: {block.gasUsed} XLG</p>
+                      <p>Reward: {this.state.blockReward} XLG</p>
                     </div>
                   </CardBody>
                 </Card>
