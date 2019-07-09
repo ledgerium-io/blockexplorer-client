@@ -24,14 +24,13 @@ import {
 import { menuHiddenBreakpoint, searchPath,localeOptions } from "Constants/defaultValues";
 
 import notifications from "Data/topnav.notifications.json";
-
+import Search from 'Components/Search'
 
 class TopNav extends Component {
   constructor(props) {
     super(props);
     this.menuButtonClick = this.menuButtonClick.bind(this);
     this.mobileMenuButtonClick = this.mobileMenuButtonClick.bind(this);
-    this.search = this.search.bind(this);
     this.handleChangeLocale = this.handleChangeLocale.bind(this);
     this.handleDocumentClickSearch = this.handleDocumentClickSearch.bind(this);
     this.addEventsSearch = this.addEventsSearch.bind(this);
@@ -262,20 +261,8 @@ class TopNav extends Component {
 
 
           <div className="search" data-search-path="/app/pages/search">
-            <Input
-              name="searchKeyword"
-              id="searchKeyword"
-              placeholder="Search by address, transaction hash"
-              value={this.state.searchKeyword}
-              onChange={e => this.handleSearchInputChange(e)}
-              onKeyPress={e => this.handleSearchInputKeyPress(e)}
-            />
-            <span
-              className="search-icon"
-              onClick={e => this.handleSearchIconClick(e)}
-            >
-              <i className="simple-icon-magnifier" />
-            </span>
+          <Search/>
+
           </div>
           </div>
 
