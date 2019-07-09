@@ -1,26 +1,43 @@
 import React, { Component } from "react"
-
+import { Redirect } from 'react-router-dom';
+import {
+  Input
+} from "reactstrap";
 class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      search: []
+      search: '',
+      redirect: false,
+      redirectTo: ''
     }
   }
 
-  inputChange(e) {
+  inputChange = (e) => {
     const { id, value } = e.currentTarget
     this.setState({ [id]:value })
+    console.log(id, value)
   }
 
-  search() {
-    const {search} = this.state
+  handleSearchIconClick() {
+    let {search} = this.state
+    if(search.length <= 0) return;
+    search = search.trim()
     if(search.length >= 64 && search.length <= 66) {
-      // Tx Hash
+      this.setState({
+        redirect: true,
+        redirectTo: `/app/tx/${search}`
+      })
     } else if(search.length >= 40 && search.length <=42) {
-      // Address
+      this.setState({
+        redirect: true,
+        redirectTo: `/app/address/${search}`
+      })
     } else if(Number.isInteger(+search)) {
-      // Block
+      this.setState({
+        redirect: true,
+        redirectTo: `/app/block/${search}`
+      })
     }
   }
 
@@ -29,6 +46,7 @@ class Search extends Component {
   const {markers} = this.state
     return (
       <div>
+      { this.state.redirect ? <Redirect to={this.state.redirectTo}/> : null}
         <Input
           name="search"
           id="search"
@@ -38,7 +56,7 @@ class Search extends Component {
         />
         <span
           className="search-icon"
-          onClick={e => this.handleSearchIconClick(e)}
+          onClick={e => this.handleSearchIconClick()}
         >
           <i className="simple-icon-magnifier" />
         </span>
