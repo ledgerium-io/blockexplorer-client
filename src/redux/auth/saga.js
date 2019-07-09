@@ -1,6 +1,5 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { auth } from '../../firebase';
 import {
     LOGIN_USER,
     REGISTER_USER,
