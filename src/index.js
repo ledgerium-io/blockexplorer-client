@@ -15,6 +15,5 @@ let render = () => {
   const css = import('./assets/css/sass/themes/gogo.' + color + '.scss').then(x => {
     const MainApp = require('./App');
   });
-
 };
 render();
