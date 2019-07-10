@@ -11,7 +11,6 @@ import transaction from './transaction';
 import transactions from './transactions'
 import address from './address';
 import nodes from './nodes';
-import test from './test';
 
 import { connect } from 'react-redux';
 
@@ -32,7 +31,6 @@ class MainApp extends Component {
 							<Route path={`${match.url}/transactions`} component={transactions} />
 							<Route path={`${match.url}/address/:address`} component={address} />
 							<Route path={`${match.url}/nodes`} component={nodes} />
-							<Route path={`${match.url}/test`} component={test} />
 							<Redirect to="/app/blockexplorer" />
 						</Switch>
 					</div>

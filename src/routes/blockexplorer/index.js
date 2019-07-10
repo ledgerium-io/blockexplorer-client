@@ -127,9 +127,7 @@ export default class extends Component {
     })
 
     socket.on('newBlockHeaders', (block) => {
-      console.log(block)
       self.addBlock(block)
-      console.log(block)
       self.setState({
         latestBlock: block.number,
         lastBlockSeconds: 0

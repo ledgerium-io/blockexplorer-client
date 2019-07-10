@@ -43,7 +43,6 @@ export default class extends Component {
           currentMiner: block.miner,
           latestBlock: block.number
         })
-        console.log(block.miner)
       })
     },5000)
   }

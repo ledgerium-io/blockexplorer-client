@@ -64,7 +64,6 @@ export default class extends Component {
       .then(response => {
         if (response.data.data.number === 0) return;
         if (!response.data.success) return;
-        console.log(response.data.data)
         this.setState({
           block: response.data.data,
           loading: false
