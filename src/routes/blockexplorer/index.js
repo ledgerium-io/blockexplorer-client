@@ -44,6 +44,7 @@ export default class extends Component {
       totalContracts: 0,
       activeNode: 0,
       blockReward: 0,
+      gasPrice: 0
     }
     this.serverSocket()
     this.startTimer()
@@ -59,44 +60,21 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:2000/api/latestBlocks/5')
-      .then(response => {
-        this.setState({
-          blocks: response.data.data,
-          latestBlock: response.data.data[0].number,
-          lastBlockSeconds: 0
-        })
-    })
 
-    axios.get('http://localhost:2000/api/blockReward')
+    axios.get('http://localhost:2000/api/blockExplorer')
       .then(response => {
-        console.log(response)
         this.setState({
-          blockReward: response.data.data
+          blocks: response.data.data.blocks,
+          latestBlock: response.data.data.blocks[0].number,
+          latestBlockSeconds: 0,
+          blockReward: response.data.data.reward,
+          transactions: response.data.data.transactions,
+          totalContracts: response.data.data.contracts,
+          activeNodes: response.data.data.peers,
+          gasPrice: response.data.data.gasPrice
         })
       })
 
-    axios.get('http://localhost:2000/api/latestTransactions/5')
-      .then(response => {
-        this.setState({
-          transactions: response.data.data,
-        })
-    })
-
-
-    axios.get('http://localhost:2000/api/contractCount')
-      .then(response => {
-        console.log(response.data)
-        this.setState({
-          totalContracts: response.data.data
-        })
-    })
-    axios.get('http://localhost:2000/api/peers')
-      .then(response => {
-        this.setState({
-          activeNodes: response.data.data
-        })
-      })
   }
 
   addTransactions(tx) {
@@ -104,7 +82,6 @@ export default class extends Component {
     for(let i=0; i<tx.length; i++) {
       web3.eth.getTransaction(tx[i])
         .then(response => {
-          console.log(response)
           transactions.unshift(response)
           if(transactions.length > 10) {
             transactions.pop()
@@ -216,7 +193,7 @@ export default class extends Component {
                   <Colxx md="6">
                   <CardBody>
                     <CardTitle>
-                      <small>Gas Price</small> 1 gwei
+                      <small>Gas Price</small> {this.state.gasPrice} gwei
                       </CardTitle>
                     </CardBody>
                   </Colxx>
@@ -255,7 +232,7 @@ export default class extends Component {
             </CardTitle>
             { blocks.length > 0 ? blocks.map((block, i) => {
               return (
-                <Card>
+                <Card key={`block${i}`}>
                 <CardBody className="side-bar-line-tx">
                     <CardTitle>
                       {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
@@ -292,7 +269,7 @@ export default class extends Component {
             </div>
             </CardTitle>
         { transactions.length > 0 ? this.state.transactions.map((tx, i) => {
-                   return <Card>
+                   return <Card key={`tx${i}`}>
                    <CardBody className="side-bar-line-tx">
                        <CardTitle>
                          {<NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>}
