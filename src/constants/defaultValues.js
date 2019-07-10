@@ -8,6 +8,5 @@ export const localeOptions=[
     // {id:'es',name:'Español'},
 ];
 
-
 export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"

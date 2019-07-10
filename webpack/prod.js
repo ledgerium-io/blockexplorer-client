@@ -11,7 +11,6 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-
 let pathsToClean = [
   'dist'
 ]
