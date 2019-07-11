@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { createBrowserHistory } from 'history';
-export const history = createBrowserHistory();
 import { baseURL } from 'Constants/defaultValues';
 
 const defaultOptions = {
-    baseURL
+    baseURL: ''
 };
 
 const instance = axios.create(defaultOptions);
