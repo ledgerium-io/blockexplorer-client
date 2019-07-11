@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { baseURL } from 'Constants/defaultValues';
 import IntlMessages from "Util/IntlMessages";
 import { Row, Card, CardBody,CardHeader, CardTitle, Button, Jumbotron, Badge } from "reactstrap";
 import moment from 'moment'
@@ -27,7 +28,7 @@ import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
 const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
-import axios from 'axios';
+import API from 'Components/API'
 
 export default class extends Component {
 
@@ -61,7 +62,7 @@ export default class extends Component {
 
   componentWillMount() {
 
-    axios.get('http://localhost:2000/api/blockExplorer')
+    API.get('/api/blockExplorer')
       .then(response => {
         this.setState({
           blocks: response.data.data.blocks,
@@ -110,7 +111,7 @@ export default class extends Component {
     this.setState({
       connecting: true
     })
-    const socket = io('http://localhost:2000')
+    const socket = io(baseURL)
 
     socket.on('connect', () => {
       self.setState({

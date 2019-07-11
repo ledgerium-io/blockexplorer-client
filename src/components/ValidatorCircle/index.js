@@ -1,7 +1,8 @@
 import React, { Component } from "react"
-import axios from 'axios'
 import io from 'socket.io-client';
 import './v.css'
+import { baseURL } from 'Constants/defaultValues';
+import API from 'Components/API'
 class ValidatorCircle extends Component {
 
   constructor(props) {
@@ -15,7 +16,7 @@ class ValidatorCircle extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:2000/api/latestBlocks/1')
+    API.get('/api/latestBlocks/1')
       .then(response => {
         this.setState({
           loading: false,
@@ -32,7 +33,7 @@ class ValidatorCircle extends Component {
     this.setState({
       connecting: true
     })
-    const socket = io('http://localhost:2000')
+    const socket = io(baseURL)
 
     socket.on('connect', () => {
       self.setState({

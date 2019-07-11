@@ -7,6 +7,8 @@ export const localeOptions=[
     {id:'en',name:'English'},
     // {id:'es',name:'Español'},
 ];
-
 export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
+
+
+export const baseURL = "http://localhost:2002"

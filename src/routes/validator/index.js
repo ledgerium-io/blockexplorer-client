@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
 const web3 = new Web3(new Web3.providers.HttpProvider('http://125.254.27.14:28545/'));
-import axios from 'axios';
+import API from 'Components/API'
 
 export default class extends Component {
 

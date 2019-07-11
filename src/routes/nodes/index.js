@@ -26,7 +26,9 @@ import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
 const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
-import axios from 'axios';
+import API from 'Components/API'
+import { baseURL } from 'Constants/defaultValues';
+
 
 export default class extends Component {
 
@@ -51,7 +53,7 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:2000/api/nodes')
+    API.get('/api/nodes')
       .then(response => {
         if(!response.data.success) return;
         this.setState({
@@ -68,7 +70,7 @@ export default class extends Component {
     this.setState({
       connecting: true
     })
-    const socket = io('http://localhost:2000')
+    const socket = io(baseURL)
 
     socket.on('connect', () => {
       self.setState({
