@@ -11,4 +11,5 @@ export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
 
 
-export const baseURL = "http://localhost:2000"
+export const baseURL = process.env.BLOCK_EXPLORER_SERVER || "http://localhost:2002"
+console.log(`baseURL ${baseURL}`);

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { baseURL } from 'Constants/defaultValues';
 import IntlMessages from "Util/IntlMessages";
 import { Row, Card, CardBody,CardHeader, CardTitle, Button, Jumbotron, Badge } from "reactstrap";
 import moment from 'moment'
@@ -110,7 +111,7 @@ export default class extends Component {
     this.setState({
       connecting: true
     })
-    const socket = io('http://localhost:2000')
+    const socket = io(baseURL)
 
     socket.on('connect', () => {
       self.setState({

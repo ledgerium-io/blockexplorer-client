@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import axios from 'axios'
 import {
   ComposableMap,
   ZoomableGroup,
@@ -15,6 +14,7 @@ const wrapperStyles = {
   margin: "0 auto",
 }
 
+import API from 'Components/API'
 class BasicMap extends Component {
   constructor(props) {
     super(props)
@@ -24,7 +24,7 @@ class BasicMap extends Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:2000/api/nodeMap')
+    API.get('/api/nodeMap')
       .then(response => {
         const nodes = response.data.data
         const markers = []
