@@ -9,4 +9,4 @@ export const localeOptions=[
 ];
 export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
-export const baseURL = "http://testnet.ledgerium.net:2002"
+export const baseURL = "http://138.197.193.201:2002"
