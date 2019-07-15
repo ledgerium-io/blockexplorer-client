@@ -2,7 +2,7 @@ import axios from 'axios';
 import { baseURL } from 'Constants/defaultValues';
 
 const defaultOptions = {
-    baseURL: ''
+    baseURL//: ''
 };
 
 const instance = axios.create(defaultOptions);
