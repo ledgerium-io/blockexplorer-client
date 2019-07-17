@@ -9,15 +9,13 @@ import {
   Button
 } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
-
+import NetworkSwitch from 'Components/NetworkSwitch'
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   setContainerClassnames,
-  clickOnMobileMenu,
-  logoutUser,
   changeLocale
 } from "Redux/actions";
 
@@ -29,158 +27,12 @@ import Search from 'Components/Search'
 class TopNav extends Component {
   constructor(props) {
     super(props);
-    this.menuButtonClick = this.menuButtonClick.bind(this);
-    this.mobileMenuButtonClick = this.mobileMenuButtonClick.bind(this);
-    this.handleChangeLocale = this.handleChangeLocale.bind(this);
-    this.handleDocumentClickSearch = this.handleDocumentClickSearch.bind(this);
-    this.addEventsSearch = this.addEventsSearch.bind(this);
-    this.removeEventsSearch = this.removeEventsSearch.bind(this);
-    this.state = {
-      isInFullScreen: false,
-      searchKeyword: ""
-    };
   }
 
   handleChangeLocale = locale => {
     this.props.changeLocale(locale);
   };
-  isInFullScreen = () => {
-    return (
-      (document.fullscreenElement && document.fullscreenElement !== null) ||
-      (document.webkitFullscreenElement &&
-        document.webkitFullscreenElement !== null) ||
-      (document.mozFullScreenElement &&
-        document.mozFullScreenElement !== null) ||
-      (document.msFullscreenElement && document.msFullscreenElement !== null)
-    );
-  };
-  handleSearchIconClick = e => {
-    if (window.innerWidth < menuHiddenBreakpoint) {
-      let elem = e.target;
-      if (!e.target.classList.contains("search")) {
-        if (e.target.parentElement.classList.contains("search")) {
-          elem = e.target.parentElement;
-        } else if (
-          e.target.parentElement.parentElement.classList.contains("search")
-        ) {
-          elem = e.target.parentElement.parentElement;
-        }
-      }
 
-      if (elem.classList.contains("mobile-view")) {
-        this.search();
-        elem.classList.remove("mobile-view");
-        this.removeEventsSearch();
-      } else {
-        elem.classList.add("mobile-view");
-        this.addEventsSearch();
-      }
-    } else {
-      this.search();
-    }
-  };
-  addEventsSearch() {
-    document.addEventListener("click", this.handleDocumentClickSearch, true);
-  }
-  removeEventsSearch() {
-    document.removeEventListener("click", this.handleDocumentClickSearch, true);
-  }
-
-  handleDocumentClickSearch(e) {
-    let isSearchClick = false;
-    if (
-      e.target &&
-      e.target.classList &&
-      (e.target.classList.contains("navbar") ||
-        e.target.classList.contains("simple-icon-magnifier"))
-    ) {
-      isSearchClick = true;
-      if (e.target.classList.contains("simple-icon-magnifier")) {
-        this.search();
-      }
-    } else if (
-      e.target.parentElement &&
-      e.target.parentElement.classList &&
-      e.target.parentElement.classList.contains("search")
-    ) {
-      isSearchClick = true;
-    }
-
-    if (!isSearchClick) {
-      const input = document.querySelector(".mobile-view");
-      if (input && input.classList) input.classList.remove("mobile-view");
-      this.removeEventsSearch();
-      this.setState({
-        searchKeyword: ""
-      });
-    }
-  }
-  handleSearchInputChange(e) {
-    this.setState({
-      searchKeyword: e.target.value
-    });
-  }
-  handleSearchInputKeyPress(e) {
-    if (e.key === "Enter") {
-      this.search();
-    }
-  }
-
-  search() {
-    this.props.history.push(searchPath + "/" + this.state.searchKeyword);
-    this.setState({
-      searchKeyword: ""
-    });
-  }
-
-  toggleFullScreen = () => {
-    const isInFullScreen = this.isInFullScreen();
-
-    var docElm = document.documentElement;
-    if (!isInFullScreen) {
-      if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-      } else if (docElm.mozRequestFullScreen) {
-        docElm.mozRequestFullScreen();
-      } else if (docElm.webkitRequestFullScreen) {
-        docElm.webkitRequestFullScreen();
-      } else if (docElm.msRequestFullscreen) {
-        docElm.msRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    }
-    this.setState({
-      isInFullScreen: !isInFullScreen
-    });
-  };
-
-  handleLogout = () => {
-    this.props.logoutUser(this.props.history);
-  };
-
-  menuButtonClick(e, menuClickCount, containerClassnames) {
-    e.preventDefault();
-
-    setTimeout(() => {
-      var event = document.createEvent("HTMLEvents");
-      event.initEvent("resize", false, false);
-      window.dispatchEvent(event);
-    }, 350);
-    this.props.setContainerClassnames(++menuClickCount, containerClassnames,this.props.selectedMenuHasSubItems);
-  }
-  mobileMenuButtonClick(e, containerClassnames) {
-    e.preventDefault();
-    this.props.clickOnMobileMenu(containerClassnames);
-  }
 
   render() {
     const { containerClassnames, menuClickCount, locale } = this.props;
@@ -190,43 +42,19 @@ class TopNav extends Component {
         <NavLink
           to="#"
           className="menu-button d-none d-md-block"
-          onClick={e =>
-            this.menuButtonClick(e, menuClickCount, containerClassnames)
-          }
         >
-          <svg
-            className="main"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 9 17"
-          >
-            <rect x="0.48" y="0.5" width="7" height="1" />
-            <rect x="0.48" y="7.5" width="7" height="1" />
-            <rect x="0.48" y="15.5" width="7" height="1" />
-          </svg>
-          <svg
-            className="sub"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 18 17"
-          >
-            <rect x="1.56" y="0.5" width="16" height="1" />
-            <rect x="1.56" y="7.5" width="16" height="1" />
-            <rect x="1.56" y="15.5" width="16" height="1" />
-          </svg>
+
         </NavLink>
         <NavLink
           to="#"
           className="menu-button-mobile d-xs-block d-sm-block d-md-none"
-          onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 17">
-            <rect x="0.5" y="0.5" width="25" height="1" />
-            <rect x="0.5" y="7.5" width="25" height="1" />
-            <rect x="0.5" y="15.5" width="25" height="1" />
-          </svg>
         </NavLink>
 
 
-
+        <div className="d-inline-block">
+          <NetworkSwitch/>
+        </div>
         <div className="d-inline-block">
           <UncontrolledDropdown className="ml-2">
             <DropdownToggle
@@ -257,15 +85,10 @@ class TopNav extends Component {
 
         <div className="ml-auto">
           <div className="header-icons d-inline-block align-middle">
-
-
-
-          <div className="search" data-search-path="/app/pages/search">
-          <Search/>
-
+            <div className="search" data-search-path="/app/pages/search">
+              <Search/>
+            </div>
           </div>
-          </div>
-
         </div>
       </nav>
     );
@@ -273,11 +96,11 @@ class TopNav extends Component {
 }
 
 const mapStateToProps = ({ menu, settings }) => {
-  const { containerClassnames, menuClickCount,selectedMenuHasSubItems } = menu;
+  const { containerClassnames,} = menu;
   const { locale } = settings;
-  return { containerClassnames, menuClickCount, selectedMenuHasSubItems,locale };
+  return { containerClassnames, locale };
 };
 export default injectIntl(connect(
   mapStateToProps,
-  { setContainerClassnames, clickOnMobileMenu, logoutUser, changeLocale }
+  { setContainerClassnames, changeLocale }
 )(TopNav));
