@@ -47,21 +47,9 @@ export default class extends Component {
       blockReward: 0,
       gasPrice: 0
     }
-    this.serverSocket()
-    this.startTimer()
-  }
-
-  startTimer() {
-    this.timer = setInterval(()=>{
-      const lastBlockSeconds = this.state.lastBlockSeconds + 1
-      this.setState({
-        lastBlockSeconds
-      })
-    },1000)
   }
 
   componentWillMount() {
-
     API.get('/api/blockExplorer')
       .then(response => {
         this.setState({
@@ -75,7 +63,33 @@ export default class extends Component {
           gasPrice: response.data.data.gasPrice
         })
       })
+      this.listen()
+      this.startTimer()
+  }
 
+  componentWillUnmount () {
+   global.serverSocket.off('newBlockHeaders', this.newBlockHeaders)
+ }
+
+ listen = () => {
+    global.serverSocket.on('newBlockHeaders', this.newBlockHeaders)
+  }
+
+ startTimer() {
+   this.timer = setInterval(()=>{
+     const lastBlockSeconds = this.state.lastBlockSeconds + 1
+     this.setState({
+       lastBlockSeconds
+     })
+   },1000)
+ }
+
+  newBlockHeaders = (block) => {
+    this.addBlock(block)
+    this.setState({
+      latestBlock: block.number,
+      lastBlockSeconds: 0
+    })
   }
 
   addTransactions(tx) {
@@ -106,35 +120,6 @@ export default class extends Component {
   }
 
 
-  serverSocket() {
-    const self = this
-    this.setState({
-      connecting: true
-    })
-    const socket = io(baseURL)
-
-    socket.on('connect', () => {
-      self.setState({
-        connected: true,
-        connecting: false
-      })
-    })
-
-    socket.on('disconnect', () => {
-      self.setState({
-        connected: false,
-        connecting: false
-      })
-    })
-
-    socket.on('newBlockHeaders', (block) => {
-      self.addBlock(block)
-      self.setState({
-        latestBlock: block.number,
-        lastBlockSeconds: 0
-      })
-    })
-  }
 
   render() {
     const blocks = this.state.blocks
@@ -142,6 +127,9 @@ export default class extends Component {
     return (
       <Fragment>
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
+        <span className="">
+
+        </span>
         <Separator className="mb-5" />
           <Row>
             <Colxx md="12">
