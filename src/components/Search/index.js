@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import { Redirect } from 'react-router-dom';
 import {
-  Input
+  Input,
+  Form
 } from "reactstrap";
 class Search extends Component {
   constructor(props) {
@@ -16,10 +17,10 @@ class Search extends Component {
   inputChange = (e) => {
     const { id, value } = e.currentTarget
     this.setState({ [id]:value })
-    console.log(id, value)
   }
 
-  handleSearchIconClick() {
+  handleSearchIconClick = e => {
+    if(e) e.preventDefault();
     let {search} = this.state
     if(search.length <= 0) return;
     search = search.trim()
@@ -50,10 +51,11 @@ class Search extends Component {
     return (
       <div>
       { this.state.redirect ? <Redirect to={this.state.redirectTo}/> : null}
+        <Form onSubmit={this.handleSearchIconClick}>
         <Input
           name="search"
           id="search"
-          placeholder="Search by address, transaction hash"
+          placeholder="Search by block number, address or transaction hash"
           value={this.state.search}
           onChange={this.inputChange}
         />
@@ -63,6 +65,7 @@ class Search extends Component {
         >
           <i className="simple-icon-magnifier" />
         </span>
+        </Form>
       </div>
     )
   }
