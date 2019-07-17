@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Redirect } from 'react-router-dom';
-import {networks, connectedNetwork} from 'Constants/defaultValues'
+import {networks, connectedNetwork, originalNetworkCount} from 'Constants/defaultValues'
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -17,6 +17,7 @@ import {
   FormGroup,
   FormText
 } from "reactstrap";
+import { Separator } from "Components/CustomBootstrap";
 
 class NetworkSwitch extends Component {
   constructor(props) {
@@ -74,11 +75,20 @@ class NetworkSwitch extends Component {
     for(let i=0; i<expectedURLCharacters.length; i++) {
       if(!customNetworkURL.includes(expectedURLCharacters[i])) return this.setState({customNetworkError: "Invalid URL required"})
     }
-    const network = JSON.stringify({
+    const network = {
+      id: networks.length+1,
       name: customNetworkName,
       url: customNetworkURL
-    })
-    localStorage.setItem('network', network)
+    }
+
+    localStorage.setItem('network', JSON.stringify(network))
+    if(localStorage.getItem('customNetworks')) {
+      let customNetworks = JSON.parse(localStorage.getItem('customNetworks'))
+      customNetworks.push(network)
+      localStorage.setItem('customNetworks', JSON.stringify(customNetworks))
+    } else {
+      localStorage.setItem('customNetworks', JSON.stringify([network]))
+    }
     location.reload(true);
 
   }
@@ -90,6 +100,11 @@ class NetworkSwitch extends Component {
       url
     })
     localStorage.setItem('network', network)
+    location.reload(true);
+  }
+
+  deleteCustomNetwork = () => {
+    localStorage.removeItem('customNetworks')
     location.reload(true);
   }
 
@@ -172,13 +187,18 @@ class NetworkSwitch extends Component {
         <DropdownMenu className="mt-3" right>
           {networks.map( (network, i) => {
             return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.url)}} key={network+i}>
-              <span >{network.name}</span>
+              {network.name}
             </DropdownItem>)
           })}
+          <Separator/>
             <DropdownItem onClick={this.toggle}>
             Custom host
             </DropdownItem>
-
+            {networks.length > originalNetworkCount ?
+              <DropdownItem onClick={this.deleteCustomNetwork}>
+              Clear Custom Hosts
+              </DropdownItem>
+             : null}
         </DropdownMenu>
       </UncontrolledDropdown>
       </div>

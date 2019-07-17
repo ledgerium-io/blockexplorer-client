@@ -10,7 +10,7 @@ export const localeOptions=[
 export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
 
-export const defaultNetworks = [
+let networkList = [
   {
     id: 1,
     name: 'Ledgerium Mainnet',
@@ -33,7 +33,15 @@ export const defaultNetworks = [
   }
 ]
 
+export const originalNetworkCount = networkList.length
 
-export const networks = [...defaultNetworks]
+if(localStorage.getItem('customNetworks')) {
+    const customNetworks = JSON.parse(localStorage.getItem('customNetworks'))
+    for(let i=0; i<customNetworks.length; i++) {
+      networkList.push(customNetworks[i])
+    }
+}
+export const defaultNetworks = networkList
+export const networks = [...networkList]
 export const baseURL = localStorage.getItem('network') ? JSON.parse(localStorage.getItem('network')).url : defaultNetworks[0].url
 export const connectedNetwork = localStorage.getItem('network') ? JSON.parse(localStorage.getItem('network')) : defaultNetworks[0]
