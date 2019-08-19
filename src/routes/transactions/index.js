@@ -27,6 +27,7 @@ import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
 const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
 import API from 'Components/API'
+import {addressType} from "Components/Functions"
 
 export default class extends Component {
 
@@ -51,10 +52,23 @@ export default class extends Component {
     API.get('/api/transactions')
       .then(response => {
         if(response.data.success) {
-            this.setState({
-              transactions: response.data.data,
-              loading: false
+          let promises = []
+          let transactions = response.data.data
+          for(let i=0; i<transactions.length; i++) {
+            promises.push(addressType(transactions[i].to))
+          }
+          Promise.all(promises)
+            .then(data => {
+              for(let i=0; i<data.length; i++) {
+                transactions[i].type = data[i] || ""
+              }
+              this.setState({
+                transactions,
+                loading: false
+              })
             })
+            .catch(console.log)
+
         }
       })
   }
@@ -94,8 +108,9 @@ export default class extends Component {
                  className="list-item-heading mb-0 truncate w-40 w-xs-100  mb-1 mt-1"
                >
 
+
                { " " }
-               <span className="align-middle d-inline-block color-theme-1">TX</span>
+               <span className="align-middle d-inline-block color-theme-1">{tx.type}</span>
              </NavLink>
              <p className="mb-1 text-muted text-small w-15 w-xs-100 ">
                <span className="color-theme-2"></span>
@@ -103,11 +118,7 @@ export default class extends Component {
              <p className="mb-1 text-muted text-small w-15 w-xs-100">
                <NavLink to={'/app/block/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
              </p>
-             <div className="w-15 w-xs-100">
-               <Badge pill>
-                 {tx.transaction_type}
-               </Badge>
-             </div>
+
              </CardBody>
              </div>
              <div className="card-body pt-1">
