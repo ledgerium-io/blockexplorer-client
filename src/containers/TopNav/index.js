@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 import NetworkSwitch from 'Components/NetworkSwitch'
+import GetXLG from 'Components/GetXLG'
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import { NavLink } from "react-router-dom";
@@ -54,6 +55,9 @@ class TopNav extends Component {
 
         <div className="d-inline-block">
           <NetworkSwitch/>
+        </div>
+        <div className ="d-inline-block">
+          <GetXLG/>
         </div>
         <div className="d-inline-block">
           <UncontrolledDropdown className="ml-2">
