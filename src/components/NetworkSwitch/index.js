@@ -73,7 +73,7 @@ class NetworkSwitch extends Component {
     const {customNetworkName, customNetworkURL} = this.state
     if(customNetworkName === "" || customNetworkURL === "") return this.setState({customNetworkError: "Both fields are required"})
     for(let i=0; i<expectedURLCharacters.length; i++) {
-      if(!customNetworkURL.includes(expectedURLCharacters[i])) return this.setState({customNetworkError: "Invalid URL required"})
+      if(!customNetworkURL.includes(expectedURLCharacters[i])) return this.setState({customNetworkError: "Valid URL required"})
     }
     const network = {
       id: networks.length+1,
@@ -190,7 +190,7 @@ class NetworkSwitch extends Component {
               {network.name}
             </DropdownItem>)
           })}
-          <Separator/>
+          <Separator/><Separator/>
             <DropdownItem onClick={this.toggle}>
             Custom host
             </DropdownItem>
