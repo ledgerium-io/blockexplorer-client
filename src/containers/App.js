@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
-import { defaultStartPath } from 'Constants/defaultValues'
+import { defaultStartPath, connectedNetwork} from 'Constants/defaultValues'
 import { connect } from "react-redux";
 import AppLocale from '../lang';
 import MainRoute from 'Routes';
@@ -9,6 +9,9 @@ import error from 'Routes/pages/error'
 import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
+
+import io from 'socket.io-client';
+global.serverSocket = io(connectedNetwork.url)
 
 const InitialPath = ({ component: Component, authUser, ...rest }) =>
 	<Route
