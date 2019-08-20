@@ -64,10 +64,11 @@ class GetXLG extends Component {
         :
 
           <div>
-            <NavLink to="/app/faucet">
-              Faucet
-            </NavLink>
-
+            <a target="_blank" href="/app/faucet">
+              <DropdownItem>
+                Faucet
+              </DropdownItem>
+            </a>
           </div>
         }
 
