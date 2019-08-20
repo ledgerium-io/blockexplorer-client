@@ -87,7 +87,7 @@ export default class extends Component {
             <CardBody>
             <div>
               <h3> {connectedNetwork.name} Faucet </h3>
-              <br/>
+              <Separator className="mb-5" />
               <FormGroup>
                 <Label for="address"> Address {this.state.address.length>0 && this.state.validAddress ? <i className="simple-icon-check"/> : <i className="simple-icon-exclamation"/> }</Label>
                 <Input type="text" id="address" value={this.state.address} onChange={this.onAddressChange}/>
@@ -96,7 +96,7 @@ export default class extends Component {
               {this.state.balance === "" ?  null : <div>Current Balance: {this.state.balance} XLG</div>}
               <br/>
               <FormGroup>
-               <Label for="amount">Request Amount</Label>
+               <Label for="amount">Request XLG</Label>
                <Input type="select" name="select" id="amount" onChange={this.onRequestAmountChange}>
                  <option>1</option>
                  <option>2</option>
@@ -104,15 +104,23 @@ export default class extends Component {
                </Input>
              </FormGroup>
              <br/>
+             <div className="d-flex justify-content-between align-items-center">
              <ReCAPTCHA
               sitekey="6LckqzIUAAAAAOQtQAxFwCjtpilWmug5weMECc8U"
               onChange={this.onChange}
             />,
-            <br/>
-             <Button color="primary" size="sm" className="mb-2" onClick={this.submit}>Submit</Button>
+             <Button color="primary" size="md" className="mb-2" onClick={this.submit}>Submit</Button>
+             </div>
              </div>
             </CardBody>
+
           </Card>
+
+          <div className="d-flex justify-content-center ">
+          <br/>
+          Request limit: 3 XLG per 24 hours
+          </div>
+
         </Colxx>
         <Colxx md="3">
         </Colxx>
