@@ -14,22 +14,31 @@ let networkList = [
   {
     id: 1,
     name: 'Ledgerium Mainnet',
-    url: 'http://testnet.ledgerium.net:2002'
+    url: 'http://testnet.ledgerium.net:2002',
+    faucetUrl: 'null',
+    type: 'mainnet',
   },
   {
     id: 2,
     name: 'Ledgerium Testnet',
-    url: 'http://testnet.ledgerium.net:2002'
+    url: 'http://testnet.ledgerium.net:2002',
+    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    type: 'testnet',
+
   },
   {
     id: 3,
     name: 'Ledgerium Devnet',
-    url: 'http://138.197.193.201:2002'
+    url: 'http://138.197.193.201:2002',
+    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    type: 'testnet',
   },
   {
     id: 4,
     name: 'Localhost',
-    url: 'http://localhost:2002'
+    url: 'http://localhost:2002',
+    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    type: 'testnet',
   }
 ]
 
