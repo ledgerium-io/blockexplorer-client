@@ -59,29 +59,7 @@ class TopNav extends Component {
         <div className ="d-inline-block">
           <GetXLG/>
         </div>
-        <div className="d-inline-block">
-          <UncontrolledDropdown className="ml-2">
-            <DropdownToggle
-              caret
-              color="light"
-              size="sm"
-              className="language-button"
-            >
-              <span className="name">{this.props.locale.toUpperCase()}</span>
-            </DropdownToggle>
-            <DropdownMenu className="mt-3" right>
-            {
-              localeOptions.map((l)=>{
-                return(
-                  <DropdownItem onClick={() => this.handleChangeLocale(l.id)} key={l.id}>
-                  {l.name}
-                </DropdownItem>
-                )
-              })
-            }
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </div>
+
 
         <a className="navbar-logo" href="/app/blockexplorer">
         <img alt="Logo" width="75px" src="/assets/img/Ledgerium_logo_blue.svg" />
