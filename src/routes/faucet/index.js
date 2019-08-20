@@ -17,10 +17,13 @@ export default class extends Component {
     super(props)
     this.state = {
       validAddress: null,
+      message: '',
       address: '',
       balance: '',
       requestAmount: 1,
       token: null,
+      loading: false,
+      receipt: null,
 
     }
   }
@@ -69,10 +72,21 @@ export default class extends Component {
   }
 
   submit = () => {
+    this.setState({loading: true, receipt: null, message: ''});
     if(!this.passedChecks()) {
-      return;
+      return this.setState({loading: false});
     } else {
-      console.log('sabmittin')
+      const amount = parseInt(this.state.requestAmount)
+      const address = this.state.address
+      axios.post('http://testnet.ledgerium.net:5577/', {amount, address,})
+        .then(response => {
+          this.setState({loading: false, receipt: response.data.receipt, message: response.data.message});
+          console.log(response.data)
+        })
+        .catch(error => {
+          this.setState({loading: false});
+          console.log(error)
+        })
     }
   }
 
@@ -109,8 +123,23 @@ export default class extends Component {
               sitekey="6LckqzIUAAAAAOQtQAxFwCjtpilWmug5weMECc8U"
               onChange={this.onChange}
             />,
-             <Button color="primary" size="md" className="mb-2" onClick={this.submit}>Submit</Button>
+             <Button
+              color="primary"
+              size="md"
+              className="mb-2"
+              onClick={this.submit}
+              disabled={this.state.loading}
+             >
+            Submit
+            </Button>
              </div>
+             <br/>
+               <div className="d-flex justify-content-center">
+               {this.state.message ? this.state.message : null }
+               </div>
+               <div className="d-flex justify-content-center">
+               {this.state.receipt ? <a target="_blank" href={`/app/tx/${this.state.receipt.transactionHash}`}> View Transaction <i className="simple-icon-login"/> </a> : null }
+               </div>
              </div>
             </CardBody>
 
