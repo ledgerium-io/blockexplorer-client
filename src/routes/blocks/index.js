@@ -72,7 +72,7 @@ export default class extends Component {
             <CardTitle>
             Last 100 Blocks
             <div className="float-right float-none-xs mt-2">
-            <NavLink to="/app/blockexplorer">
+            <NavLink to="/blockexplorer">
             <Button color="primary" size="sm" className="mb-2">
               <i className="iconsminds-arrow-out-left"/> Go back
             </Button>
@@ -89,13 +89,13 @@ export default class extends Component {
                     <Card>
                     <CardBody className="side-bar-line">
                         <CardTitle>
-                          {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
+                          {<NavLink to={'/blockexplorer/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
                         </CardTitle>
                         <div className="d-flex justify-content-between">
                           <p>{block.transactions.length} Transactions</p>
                           <p>{moment(block.timestamp*1000).fromNow()}</p>
                         </div>
-                        <div> Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></div>
+                        <div> Miner: <NavLink to={"/blockexplorer/address/"+block.miner}>{block.miner}</NavLink></div>
                         <div> Reward: {block.gasUsed} XLG</div>
                       </CardBody>
                     </Card>

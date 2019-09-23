@@ -86,7 +86,7 @@ export default class extends Component {
             <CardTitle>
             Last 100 Transactions
             <div className="float-right float-none-xs mt-2">
-            <NavLink to="/app/blockexplorer">
+            <NavLink to="/blockexplorer">
             <Button color="primary" size="sm" className="mb-2">
               <i className="iconsminds-arrow-out-left"/> Go back
             </Button>
@@ -116,17 +116,17 @@ export default class extends Component {
                <span className="color-theme-2"></span>
              </p>
              <p className="mb-1 text-muted text-small w-15 w-xs-100">
-               <NavLink to={'/app/block/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
+               <NavLink to={'/blockexplorer/block/'+tx.blockNumber}>Block #{tx.blockNumber.toLocaleString()}</NavLink>
              </p>
 
              </CardBody>
              </div>
              <div className="card-body pt-1">
                <p className="mb-0">
-               <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
+               <NavLink to={'/blockexplorer/tx/'+tx.hash}>{tx.hash}</NavLink>
                </p>
                <div className="mb-0">
-               <p><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink></p>
+               <p><NavLink to={'/blockexplorer/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></p>
                </div>
                <br/>
                <p className="mb-0">

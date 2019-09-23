@@ -59,7 +59,7 @@ export default class extends Component {
       <Fragment>
       <div className="d-flex justify-content-between align-items-center">
       <h3>LEDGERIUM BLOCK EXPLORER</h3>
-      <NavLink to="/app/dashboards/blockexplorer">
+      <NavLink to="/blockexplorer">
       <Button color="primary" size="sm" className="mb-2">
         <i className="iconsminds-arrow-out-left"/> Go back
       </Button>
@@ -81,7 +81,7 @@ export default class extends Component {
                   </CardTitle>
                   <br/>
                   <p><strong> {tx.blockHash}</strong></p>
-                  <p><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/app/dashboards/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></p>
+                  <p><NavLink to={'/blockexplorer/address/'+(tx.from)}>{tx.from}</NavLink> <i className="iconsminds-arrow-out-right"/> <NavLink to={'/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> Transaction </span>
                     <span> Success </span>
@@ -89,7 +89,7 @@ export default class extends Component {
                   <p></p>
                   <Table>
                     <tbody>
-                      <tr><td>Block Number</td><td><NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink></td></tr>
+                      <tr><td>Block Number</td><td><NavLink to={'/blockexplorer/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink></td></tr>
                       <tr><td>Nonce</td><td>{tx.nonce}</td></tr>
                       <tr><td>TX Fee</td><td>{tx.gasPrice}</td></tr>
                       <tr><td>v</td><td>{tx.v}</td></tr>

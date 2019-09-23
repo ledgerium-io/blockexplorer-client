@@ -140,7 +140,7 @@ export default class extends Component {
                     <Colxx md="12">
                       <CardBody>
                         <CardTitle>
-                          <NavLink to={'/app/block/' + (blocks.length > 0 ? blocks[0].number : "#")}>
+                          <NavLink to={'/blockexplorer/block/' + (blocks.length > 0 ? blocks[0].number : "#")}>
                           <small>Best Block</small> #{blocks.length > 0 ? blocks[0].number.toLocaleString() : ""}
                           </NavLink>
                         </CardTitle>
@@ -169,7 +169,7 @@ export default class extends Component {
 
                   <Colxx md="6">
                   <CardBody>
-                    <NavLink to={'/app/nodes/'}>
+                    <NavLink to={'/blockexplorer/nodes/'}>
                       <CardTitle>
                         <small>Nodes Online</small> {this.state.activeNodes}
                       </CardTitle>
@@ -210,7 +210,7 @@ export default class extends Component {
             <CardTitle>
             Blocks
             <div className="float-right float-none-xs mt-2">
-            <NavLink to={'/app/blocks'}>
+            <NavLink to={'/blockexplorer/blocks'}>
               <Button color="primary" size="sm" className="mb-2">
                 View all Blocks <i className="iconsminds-arrow-out-right"/>
               </Button>
@@ -222,14 +222,14 @@ export default class extends Component {
                 <Card key={`block${i}`}>
                 <CardBody className="side-bar-line-tx">
                     <CardTitle>
-                      {<NavLink to={'/app/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
+                      {<NavLink to={'/blockexplorer/block/'+block.number}>{block.number.toLocaleString()}</NavLink>} <br/>
                     </CardTitle>
                     <div className="d-flex justify-content-between">
                       <p>{block.transactions.length} Transactions</p>
                       <p>{moment(block.timestamp*1000).fromNow()}</p>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p>Miner: <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink></p>
+                      <p>Miner: <NavLink to={"/blockexplorer/address/"+block.miner}>{block.miner}</NavLink></p>
                       <p>Reward: {this.state.blockReward} XLG</p>
                     </div>
                   </CardBody>
@@ -248,7 +248,7 @@ export default class extends Component {
 
             Transactions
             <div className="float-right float-none-xs mt-2">
-            <NavLink to={'/app/transactions'}>
+            <NavLink to={'/blockexplorer/transactions'}>
               <Button color="primary" size="sm" className="mb-2">
                 View all Transactions <i className="iconsminds-arrow-out-right"/>
               </Button>
@@ -259,11 +259,11 @@ export default class extends Component {
                    return <Card key={`tx${i}`}>
                    <CardBody className="side-bar-line-tx">
                        <CardTitle>
-                         {<NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>}
+                         {<NavLink to={'/blockexplorer/tx/'+tx.hash}>{tx.hash}</NavLink>}
                        </CardTitle>
                        <div className="d-flex justify-content-between">
                         <p></p>
-                        <p><small><NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink><i className="iconsminds-arrow-out-right"/><NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink></small></p>
+                        <p><small><NavLink to={'/blockexplorer/address/'+(tx.from)}>{tx.from}</NavLink><i className="iconsminds-arrow-out-right"/><NavLink to={'/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink></small></p>
                         <p></p>
                        </div>
                        <div className="d-flex justify-content-between">
@@ -276,7 +276,7 @@ export default class extends Component {
                          </small>
                          </p>
                          <p>
-                         Block #{<NavLink to={'/app/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink>}
+                         Block #{<NavLink to={'/blockexplorer/block/'+(tx.blockNumber)}>{tx.blockNumber.toLocaleString()}</NavLink>}
                          </p>
                        </div>
                       </CardBody>

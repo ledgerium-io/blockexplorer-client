@@ -82,7 +82,7 @@ export default class extends Component {
             <CardTitle>
             Smart Contracts
             <div className="float-right float-none-xs mt-2">
-            <NavLink to="/app/blockexplorer">
+            <NavLink to="/blockexplorer">
             <Button color="primary" size="sm" className="mb-2">
               <i className="iconsminds-arrow-out-left"/> Go back
             </Button>

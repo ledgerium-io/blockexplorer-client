@@ -39,7 +39,7 @@ class App extends Component {
 					<Fragment>
 						<Switch>
 							<InitialPath
-								path={`${match.url}app`}
+								path={`${match.url}blockexplorer`}
 								authUser={user}
 								component={MainRoute}
 							/>

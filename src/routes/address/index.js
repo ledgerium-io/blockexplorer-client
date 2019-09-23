@@ -64,7 +64,7 @@ export default class extends Component {
       <Fragment>
         <div className="d-flex justify-content-between align-items-center">
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
-        <NavLink to="/app/blockexplorer">
+        <NavLink to="/blockexplorer">
         <Button color="primary" size="sm" className="mb-2">
           <i className="iconsminds-arrow-out-left"/> Go back
         </Button>
@@ -88,7 +88,7 @@ export default class extends Component {
                   <p><strong> {address.address}</strong> </p>
                   <div className="d-flex justify-content-between align-items-center">
                     <span> {address.transactions.length} Transactions Sent/Recieved </span>
-                    <span> Last Balance Update Block #<NavLink to={"/app/block/"+address.blockNumber}>{address.blockNumber.toLocaleString()} </NavLink></span>
+                    <span> Last Balance Update Block #<NavLink to={"/blockexplorer/block/"+address.blockNumber}>{address.blockNumber.toLocaleString()} </NavLink></span>
                   </div>
                   <p></p>
                   <div className="progress-bar-circle">
@@ -133,7 +133,7 @@ export default class extends Component {
                           <span className="color-theme-2"></span>
                         </p>
                         <p className="mb-1 text-muted text-small w-15 w-xs-100">
-                          Block #{<NavLink to={'/app/block/'+tx.blockNumber}>{tx.blockNumber.toLocaleString()}</NavLink>}
+                          Block #{<NavLink to={'/blockexplorer/block/'+tx.blockNumber}>{tx.blockNumber.toLocaleString()}</NavLink>}
                         </p>
                         <div className="w-15 w-xs-100">
                           <Badge pill>
@@ -144,10 +144,10 @@ export default class extends Component {
                         </div>
                         <div className="card-body pt-1">
                           <p className="mb-0">
-                          <NavLink to={'/app/tx/'+tx.hash}>{tx.hash}</NavLink>
+                          <NavLink to={'/blockexplorer/tx/'+tx.hash}>{tx.hash}</NavLink>
                           </p>
                           <p className="mb-0">
-                          <NavLink to={'/app/address/'+(tx.from)}>{tx.from}</NavLink><i className="iconsminds-arrow-out-right"/><NavLink to={'/app/address/'+(tx.to)}>{tx.to}</NavLink>
+                          <NavLink to={'/blockexplorer/address/'+(tx.from)}>{tx.from}</NavLink><i className="iconsminds-arrow-out-right"/><NavLink to={'/blockexplorer/address/'+(tx.to)}>{tx.to}</NavLink>
                           </p>
                           <br/>
                         </div>

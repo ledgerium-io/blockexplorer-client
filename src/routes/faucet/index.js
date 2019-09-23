@@ -138,7 +138,7 @@ export default class extends Component {
                {this.state.message ? this.state.message : null }
                </div>
                <div className="d-flex justify-content-center">
-               {this.state.receipt ? <a target="_blank" href={`/app/tx/${this.state.receipt.transactionHash}`}> View Transaction <i className="simple-icon-login"/> </a> : null }
+               {this.state.receipt ? <a target="_blank" href={`/blockexplorer/tx/${this.state.receipt.transactionHash}`}> View Transaction <i className="simple-icon-login"/> </a> : null }
                </div>
              </div>
             </CardBody>

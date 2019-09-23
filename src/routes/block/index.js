@@ -79,7 +79,7 @@ export default class extends Component {
       <Fragment>
         <div className="d-flex justify-content-between align-items-center">
         <h3>LEDGERIUM BLOCK EXPLORER</h3>
-        <NavLink to="/app/blockexplorer">
+        <NavLink to="/blockexplorer">
         <Button color="primary" size="sm" className="mb-2">
           <i className="iconsminds-arrow-out-left"/> Go back
         </Button>
@@ -110,7 +110,7 @@ export default class extends Component {
                   <Table>
                     <tbody>
                       <tr><td>Hash</td><td>{block.hash}</td></tr>
-                      <tr><td>Parent Hash</td><td><NavLink to={'/app/block/'+(block.number-1)}>{block.parentHash}</NavLink></td></tr>
+                      <tr><td>Parent Hash</td><td><NavLink to={'/blockexplorer/block/'+(block.number-1)}>{block.parentHash}</NavLink></td></tr>
                       <tr><td>Difficulty</td><td>{block.difficulty}</td></tr>
                       <tr><td>Total Difficulty</td><td>{block.totalDifficulty}</td></tr>
                       <tr><td>Nonce</td><td>{block.nonce}</td></tr>
@@ -139,7 +139,7 @@ export default class extends Component {
                   <CardTitle className="mb-0">
                     Miner
                   </CardTitle>
-                  <NavLink to={"/app/address/"+block.miner}>{block.miner}</NavLink>
+                  <NavLink to={"/blockexplorer/address/"+block.miner}>{block.miner}</NavLink>
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
@@ -176,7 +176,7 @@ export default class extends Component {
                           </div>
                           <div className="card-body pt-1">
                             <p className="mb-0">
-                            <NavLink to={'/app/tx/'+tx}>{tx}</NavLink>
+                            <NavLink to={'/blockexplorer/tx/'+tx}>{tx}</NavLink>
                             </p>
                             <p className="mb-0">
                             </p>

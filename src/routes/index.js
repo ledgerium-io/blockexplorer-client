@@ -26,7 +26,7 @@ class MainApp extends Component {
 				<main>
 					<div className="container-fluid">
 						<Switch>
-							<Route path={`${match.url}/blockexplorer`} exact component={blockexplorer} />
+							<Route path={`${match.url}/`} exact component={blockexplorer} />
 							<Route path={`${match.url}/block/:block`} component={block} />
 							<Route path={`${match.url}/blocks`} component={blocks} />
 							<Route path={`${match.url}/tx/:txn`} component={transaction} />
@@ -36,7 +36,7 @@ class MainApp extends Component {
 							<Route path={`${match.url}/faucet`} component={faucet} />
 							<Route path={`${match.url}/contracts`} component={contracts} />
 
-							<Redirect to="/app/blockexplorer" />
+							<Redirect to="/blockexplorer" />
 						</Switch>
 					</div>
 				</main>
