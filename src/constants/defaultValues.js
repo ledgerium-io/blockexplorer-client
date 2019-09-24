@@ -11,13 +11,13 @@ export const searchPath = "/app/search"
 export const servicePath = "https://api.coloredstrategies.com"
 
 let networkList = [
-  {
-    id: 1,
-    name: 'Ledgerium Mainnet',
-    url: 'http://toorak.ledgerium.net/blockexplorersvc',
-    faucetUrl: 'http://toorak.ledgerium.net/faucet',
-    type: 'mainnet',
-  },
+  // {
+  //   id: 1,
+  //   name: 'Ledgerium Mainnet',
+  //   url: 'http://toorak.ledgerium.net/blockexplorersvc',
+  //   faucetUrl: 'http://toorak.ledgerium.net/faucet',
+  //   type: 'mainnet',
+  // },
   {
     id: 2,
     name: 'Ledgerium Toorak Testnet',

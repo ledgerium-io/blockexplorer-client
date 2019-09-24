@@ -48,7 +48,7 @@ class GetXLG extends Component {
         Get XLG
         </DropdownToggle>
         <DropdownMenu className="mt-3" right>
-        {connectedNetwork.name !== "Ledgerium Testnet" && connectedNetwork.name !== "Ledgerium Devnet" ?
+        {connectedNetwork.name == "Ledgerium Mainnet" ?
           <div>
             <a target="_blank" href="https://idex.market/eth/xlg">
               <DropdownItem>
