@@ -61,7 +61,7 @@ class TopNav extends Component {
         </div>
 
 
-        <a className="navbar-logo" href="/app/blockexplorer">
+        <a className="navbar-logo" href="/blockexplorer">
         <img alt="Logo" width="75px" src="/assets/img/Ledgerium_logo_blue.svg" />
         </a>
 

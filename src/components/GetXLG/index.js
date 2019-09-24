@@ -64,7 +64,7 @@ class GetXLG extends Component {
         :
 
           <div>
-            <a target="_blank" href="/app/faucet">
+            <a target="_blank" href="/blockexplorer/faucet">
               <DropdownItem>
                 Faucet
               </DropdownItem>
