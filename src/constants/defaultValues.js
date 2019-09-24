@@ -14,30 +14,30 @@ let networkList = [
   {
     id: 1,
     name: 'Ledgerium Mainnet',
-    url: 'http://testnet.ledgerium.net:2002',
-    faucetUrl: 'null',
+    url: 'http://toorak.ledgerium.net/blockexplorersvc',
+    faucetUrl: 'http://toorak.ledgerium.net/faucet',
     type: 'mainnet',
   },
   {
     id: 2,
-    name: 'Ledgerium Testnet',
-    url: 'http://testnet.ledgerium.net:2002',
-    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    name: 'Ledgerium Toorak Testnet',
+    url: 'http://toorak.ledgerium.io/blockexplorersvc',
+    faucetUrl: 'http://toorak.ledgerium.net/faucet',
     type: 'testnet',
 
   },
   {
     id: 3,
-    name: 'Ledgerium Devnet',
-    url: 'http://138.197.193.201:2002',
-    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    name: 'Ledgerium Flinders Testnet',
+    url: 'http://flinders01.ledgerium.io/blockexplorersvc',
+    faucetUrl: 'http://flinders01.ledgerium.io/faucet',
     type: 'testnet',
   },
   {
     id: 4,
     name: 'Localhost',
     url: 'http://localhost:2002',
-    faucetUrl: 'http://testnet.ledgerium.net:5577',
+    faucetUrl: 'http://localhost:5577',
     type: 'testnet',
   }
 ]
