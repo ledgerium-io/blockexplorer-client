@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { baseURL } from 'Constants/defaultValues';
 import IntlMessages from "Util/IntlMessages";
-import { Row, Card, CardBody,CardHeader, CardTitle, Button, Jumbotron, Badge } from "reactstrap";
+import { Row, Card, CardBody,CardHeader, CardTitle, Button} from "reactstrap";
 import moment from 'moment'
 moment.updateLocale('en', {
     relativeTime : {
@@ -22,14 +22,12 @@ moment.updateLocale('en', {
     }
 });
 import { Colxx, Separator } from "Components/CustomBootstrap";
-import BreadcrumbContainer from "Components/BreadcrumbContainer";
 import WorldMap from "Components/map";
-import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
-const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
+const web3 = new Web3(); //new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/')
 import API from 'Components/API'
-
+import ReactTooltip from 'react-tooltip'
 export default class extends Component {
 
   constructor(props) {
@@ -37,10 +35,12 @@ export default class extends Component {
     this.state = {
       connected: false,
       loading: false,
+      syncStatus: false,
       lastBlockSeconds: 0,
       averageBlockTime: 5,
       transactions: [],
       blocks: [],
+      transactions: [],
       latestBlock: 0,
       totalContracts: 0,
       activeNode: 0,
@@ -69,10 +69,39 @@ export default class extends Component {
 
   componentWillUnmount () {
    global.serverSocket.off('newBlockHeaders', this.newBlockHeaders)
+   global.serverSocket.off('pendingTransaction', this.pendingTransactions)
+   global.serverSocket.off('syncStatus', this.syncStatus)
+
  }
 
  listen = () => {
     global.serverSocket.on('newBlockHeaders', this.newBlockHeaders)
+    global.serverSocket.on('pendingTransaction', this.pendingTransactions)
+    global.serverSocket.on('syncStatus', this.syncStatus)
+
+  }
+
+  syncStatus = (status) => {
+    console.log(status, this.state.syncStatus)
+    if(!status !== this.state.syncStatus) {
+      this.setState({
+        syncStatus: !status
+      })
+    }
+  }
+
+  pendingTransactions = (tx) => {
+    console.log('tx')
+    console.log(tx)
+    let transactions = this.state.transactions
+    // if(block.transactions.length > 0) {
+    //   this.addTransactions(block.transactions)
+    // }
+    transactions.unshift(tx)
+    if(transactions.length > 4) {
+      transactions.pop()
+    }
+    this.setState({transactions})
   }
 
  startTimer() {
@@ -92,26 +121,26 @@ export default class extends Component {
     })
   }
 
-  addTransactions(tx) {
-    let transactions = this.state.transactions
-    for(let i=0; i<tx.length; i++) {
-      web3.eth.getTransaction(tx[i])
-        .then(response => {
-          transactions.unshift(response)
-          if(transactions.length > 10) {
-            transactions.pop()
-          }
-        })
-
-    }
-    this.setState({transactions})
-  }
+  // addTransactions(tx) {
+  //   let transactions = this.state.transactions
+  //   for(let i=0; i<tx.length; i++) {
+  //     web3.eth.getTransaction(tx[i])
+  //       .then(response => {
+  //         transactions.unshift(response)
+  //         if(transactions.length > 10) {
+  //           transactions.pop()
+  //         }
+  //       })
+  //
+  //   }
+  //   this.setState({transactions})
+  // }
 
   addBlock(block) {
     let blocks = this.state.blocks
-    if(block.transactions.length > 0) {
-      this.addTransactions(block.transactions)
-    }
+    // if(block.transactions.length > 0) {
+    //   this.addTransactions(block.transactions)
+    // }
     blocks.unshift(block)
     if(blocks.length > 4) {
       blocks.pop()
@@ -125,11 +154,17 @@ export default class extends Component {
     const blocks = this.state.blocks
     const transactions = this.state.transactions
     return (
-      <Fragment>
-        <h3>LEDGERIUM BLOCK EXPLORER</h3>
-        <span className="">
 
-        </span>
+      <Fragment>
+      <ReactTooltip />
+        <div className="d-flex justify-content-between">
+          <h3>LEDGERIUM BLOCK EXPLORER</h3>
+          <span>
+          <h4 className={this.state.syncStatus ? "syncGood"  :  "syncBad"} data-tip={this.state.syncStatus ? "Synced"  :  "Sync in progress"}>
+            <i className="simple-icon-globe"/>
+          </h4>
+          </span>
+        </div>
         <Separator className="mb-5" />
           <Row>
             <Colxx md="12">
