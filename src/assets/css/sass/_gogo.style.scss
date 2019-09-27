@@ -154,6 +154,14 @@ html {
   --separator-color: #{$separator-color};
 }
 
+.syncGood {
+  color: green;
+}
+
+.syncBad {
+  color: #e59e5d;
+}
+
 #root {
   height: 100%;
 }
