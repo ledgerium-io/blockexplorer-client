@@ -161,7 +161,7 @@ export default class extends Component {
           <h3>LEDGERIUM BLOCK EXPLORER</h3>
           <span>
           <h4 className={this.state.syncStatus ? "syncGood"  :  "syncBad"} data-tip={this.state.syncStatus ? "Synced"  :  "Sync in progress"}>
-            <i className="simple-icon-globe"/>
+            <i className="iconsminds-synchronize"/>
           </h4>
           </span>
         </div>
