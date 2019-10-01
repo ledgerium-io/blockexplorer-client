@@ -11,7 +11,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 
 
 import io from 'socket.io-client';
-global.serverSocket = io(connectedNetwork.url)
+global.serverSocket = io(connectedNetwork.url, {path: "/blockexplorer/socket.io"})
 
 const InitialPath = ({ component: Component, authUser, ...rest }) =>
 	<Route
