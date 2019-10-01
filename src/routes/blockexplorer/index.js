@@ -82,7 +82,7 @@ export default class extends Component {
   }
 
   syncStatus = (status) => {
-    console.log(status, this.state.syncStatus)
+    if(!status) return;
     if(!status !== this.state.syncStatus) {
       this.setState({
         syncStatus: !status
