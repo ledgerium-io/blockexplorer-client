@@ -29,8 +29,8 @@ let networkList = [
   {
     id: 3,
     name: 'Ledgerium Flinders Testnet',
-    url: 'http://flinders01.ledgerium.io/blockexplorersvc',
-    faucetUrl: 'http://flinders01.ledgerium.io/faucet',
+    url: 'http://flinders.ledgerium.io/blockexplorersvc',
+    faucetUrl: 'http://flinders.ledgerium.io/faucet',
     type: 'testnet',
   },
   {
@@ -38,7 +38,7 @@ let networkList = [
     name: 'Localhost',
     url: 'http://localhost:2002',
     faucetUrl: 'http://localhost:5577',
-    type: 'testnet',
+    type: 'custom',
   }
 ]
 
