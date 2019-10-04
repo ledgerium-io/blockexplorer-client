@@ -78,7 +78,8 @@ class NetworkSwitch extends Component {
     const network = {
       id: networks.length+1,
       name: customNetworkName,
-      url: customNetworkURL
+      url: customNetworkURL,
+      type: 'custom'
     }
 
     localStorage.setItem('network', JSON.stringify(network))
@@ -93,11 +94,12 @@ class NetworkSwitch extends Component {
 
   }
 
-  switchNetwork = (name, url) => {
-    if(!name || !url) return;
+  switchNetwork = (name, url, type) => {
+    if(!name || !url, !type) return;
     const network = JSON.stringify({
       name,
-      url
+      url,
+      type
     })
     localStorage.setItem('network', network)
     location.reload(true);
@@ -186,7 +188,7 @@ class NetworkSwitch extends Component {
         </DropdownToggle>
         <DropdownMenu className="mt-3" right>
           {networks.map( (network, i) => {
-            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.url)}} key={network+i}>
+            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.url, network.type)}} key={network+i}>
               {network.name}
             </DropdownItem>)
           })}
