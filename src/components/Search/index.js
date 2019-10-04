@@ -28,19 +28,19 @@ class Search extends Component {
       this.setState({
         search: '',
         redirect: true,
-        redirectTo: `/app/tx/${search}`
+        redirectTo: `/blockexplorer/tx/${search}`
       })
     } else if(search.length >= 40 && search.length <=42) {
       this.setState({
         search: '',
         redirect: true,
-        redirectTo: `/app/address/${search}`
+        redirectTo: `/blockexplorer/address/${search}`
       })
     } else if(Number.isInteger(+search)) {
       this.setState({
         search: '',
         redirect: true,
-        redirectTo: `/app/block/${search}`
+        redirectTo: `/blockexplorer/block/${search}`
       })
     }
   }
