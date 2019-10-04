@@ -8,10 +8,13 @@ import MainRoute from 'Routes';
 import error from 'Routes/pages/error'
 import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
-
-
 import io from 'socket.io-client';
-global.serverSocket = io(connectedNetwork.url, {path: "/blockexplorersvc/socket.io"})
+
+if(connectedNetwork.type === 'testnet') {
+	global.serverSocket = io(connectedNetwork.url, {path: "/blockexplorersvc/socket.io"})
+} else {
+		global.serverSocket = io(connectedNetwork.url)
+}
 
 const InitialPath = ({ component: Component, authUser, ...rest }) =>
 	<Route
