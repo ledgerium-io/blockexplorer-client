@@ -83,9 +83,9 @@ export default class extends Component {
 
   syncStatus = (status) => {
     if(!status) return;
-    if(!status !== this.state.syncStatus) {
+    if(status !== this.state.syncStatus) {
       this.setState({
-        syncStatus: !status
+        syncStatus: status
       })
     }
   }
@@ -121,26 +121,10 @@ export default class extends Component {
     })
   }
 
-  // addTransactions(tx) {
-  //   let transactions = this.state.transactions
-  //   for(let i=0; i<tx.length; i++) {
-  //     web3.eth.getTransaction(tx[i])
-  //       .then(response => {
-  //         transactions.unshift(response)
-  //         if(transactions.length > 10) {
-  //           transactions.pop()
-  //         }
-  //       })
-  //
-  //   }
-  //   this.setState({transactions})
-  // }
 
   addBlock(block) {
     let blocks = this.state.blocks
-    // if(block.transactions.length > 0) {
-    //   this.addTransactions(block.transactions)
-    // }
+
     blocks.unshift(block)
     if(blocks.length > 4) {
       blocks.pop()
@@ -160,7 +144,7 @@ export default class extends Component {
         <div className="d-flex justify-content-between">
           <h3>LEDGERIUM BLOCK EXPLORER</h3>
           <span>
-          <h4 className={this.state.syncStatus ? "syncGood"  :  "syncBad"} data-tip={this.state.syncStatus ? "Synced"  :  "Sync in progress"}>
+          <h4 className={!this.state.syncStatus ? "syncGood"  :  "syncBad"} data-tip={!this.state.syncStatus ? "Synced"  :  "Sync in progress"}>
             <i className="iconsminds-synchronize"/>
           </h4>
           </span>
