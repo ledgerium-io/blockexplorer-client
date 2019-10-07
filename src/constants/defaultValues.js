@@ -21,7 +21,8 @@ let networkList = [
   {
     id: 2,
     name: 'Ledgerium Toorak Testnet',
-    url: 'http://toorak.ledgerium.io/blockexplorersvc',
+    http: 'http://toorak.ledgerium.io/blockexplorersvc',
+    ws: 'http://toorak.ledgerium.io',
     faucetUrl: 'http://toorak.ledgerium.net/faucet',
     type: 'testnet',
 
@@ -29,15 +30,18 @@ let networkList = [
   {
     id: 3,
     name: 'Ledgerium Flinders Testnet',
-    url: 'http://flinders.ledgerium.io/blockexplorersvc',
+    http: 'http://flinders.ledgerium.io/blockexplorersvc',
+    ws: 'http://flinders.ledgerium.io',
     faucetUrl: 'http://flinders.ledgerium.io/faucet',
     type: 'testnet',
   },
   {
     id: 4,
     name: 'Localhost',
-    url: 'http://localhost:2002',
+    http: 'http://localhost:2002',
+    ws: 'http://localhost:2002',
     faucetUrl: 'http://localhost:5577',
+
     type: 'custom',
   }
 ]
@@ -52,5 +56,5 @@ if(localStorage.getItem('customNetworks')) {
 }
 export const defaultNetworks = networkList
 export const networks = [...networkList]
-export const baseURL = localStorage.getItem('network') ? JSON.parse(localStorage.getItem('network')).url : defaultNetworks[0].url
+export const baseURL = localStorage.getItem('network') ? JSON.parse(localStorage.getItem('network')).http : defaultNetworks[0].http
 export const connectedNetwork = localStorage.getItem('network') ? JSON.parse(localStorage.getItem('network')) : defaultNetworks[0]

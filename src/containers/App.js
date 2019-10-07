@@ -11,9 +11,11 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import io from 'socket.io-client';
 
 if(connectedNetwork.type === 'testnet') {
-	global.serverSocket = io(connectedNetwork.url, {path: "/blockexplorersvc/socket.io"})
+	console.log('testnet')
+	console.log(connectedNetwork.ws)
+	global.serverSocket = io(connectedNetwork.ws, {path: "/blockexplorersvc/socket.io"});
 } else {
-	global.serverSocket = io(connectedNetwork.url)
+	global.serverSocket = io(connectedNetwork.ws)
 }
 
 const InitialPath = ({ component: Component, authUser, ...rest }) =>

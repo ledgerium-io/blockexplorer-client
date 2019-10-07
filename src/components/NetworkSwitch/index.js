@@ -26,6 +26,7 @@ class NetworkSwitch extends Component {
       modal: false,
       customNetworkName: '',
       customNetworkURL: '',
+      customNetworkWS: '',
       customNetworkError: '',
       connected: false
     }
@@ -70,15 +71,17 @@ class NetworkSwitch extends Component {
 
   addNetwork = () => {
     const expectedURLCharacters = ['http', "://", ":"]
-    const {customNetworkName, customNetworkURL} = this.state
+    const {customNetworkName, customNetworkURL, customNetworkWS} = this.state
     if(customNetworkName === "" || customNetworkURL === "") return this.setState({customNetworkError: "Both fields are required"})
+
     for(let i=0; i<expectedURLCharacters.length; i++) {
       if(!customNetworkURL.includes(expectedURLCharacters[i])) return this.setState({customNetworkError: "Valid URL required"})
     }
     const network = {
       id: networks.length+1,
       name: customNetworkName,
-      url: customNetworkURL,
+      http: customNetworkURL,
+      ws: customNetworkWS || customNetworkURL,
       type: 'custom'
     }
 
@@ -93,12 +96,12 @@ class NetworkSwitch extends Component {
     location.reload(true);
 
   }
-
-  switchNetwork = (name, url, type) => {
-    if(!name || !url, !type) return;
+  switchNetwork = (name, http, ws, type) => {
+    if(!name || !http || !ws || !type) return;
     const network = JSON.stringify({
       name,
-      url,
+      http,
+      ws,
       type
     })
     localStorage.setItem('network', network)
@@ -151,7 +154,7 @@ class NetworkSwitch extends Component {
 
             <FormGroup>
               <Label for="customNetworkURL">
-                URL
+               Server HTTP
               </Label>
               <Input
                 value={this.state.customNetworkURL}
@@ -161,7 +164,23 @@ class NetworkSwitch extends Component {
                 placeholder="Network URL"
               />
               <FormText color="muted">
-                Example: http://testnet.ledgerium.net:2002
+                Example: http://toorak.ledgerium.io/blockchainsvc
+              </FormText>
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="customNetworkWS">
+                Server WS
+              </Label>
+              <Input
+                value={this.state.customNetworkWS}
+                type="text"
+                name="customNetworkWS"
+                onChange={this.inputChange}
+                placeholder="Network WS"
+              />
+              <FormText color="muted">
+                Example: http://toorak.ledgerium.io
               </FormText>
             </FormGroup>
 
@@ -188,7 +207,7 @@ class NetworkSwitch extends Component {
         </DropdownToggle>
         <DropdownMenu className="mt-3" right>
           {networks.map( (network, i) => {
-            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.url, network.type)}} key={network+i}>
+            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.http, network.ws, network.type)}} key={network+i}>
               {network.name}
             </DropdownItem>)
           })}
