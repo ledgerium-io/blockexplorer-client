@@ -1,5 +1,5 @@
 export const defaultMenuType = 'menu-hidden'; // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
-export const defaultStartPath = '/';
+export const defaultStartPath = '/blockexplorer';
 export const subHiddenBreakpoint=1440;
 export const menuHiddenBreakpoint = 768;
 export const defaultLocale='en';
