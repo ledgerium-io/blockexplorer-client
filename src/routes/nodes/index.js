@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import IntlMessages from "Util/IntlMessages";
-import { Row, Card, CardBody,CardHeader, Table, CardTitle, Button, Jumbotron, Badge } from "reactstrap";
+import { Row, Card, CardBody, Table, CardTitle, Button} from "reactstrap";
 import moment from 'moment'
 moment.updateLocale('en', {
     relativeTime : {
@@ -21,14 +20,12 @@ moment.updateLocale('en', {
     }
 });
 import { Colxx, Separator } from "Components/CustomBootstrap";
-import BreadcrumbContainer from "Components/BreadcrumbContainer";
 import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
-import Web3 from 'web3';
-const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
-import API from 'Components/API'
-import { baseURL } from 'Constants/defaultValues';
 
+import { BarChart, Bar, YAxis, ReferenceLine } from 'recharts';
+import RoundedBar from 'Components/RoundedBar';
+import WorldMap from "Components/mapNodes";
 
 export default class extends Component {
 
@@ -37,8 +34,18 @@ export default class extends Component {
     this.state = {
       connected: false,
       connecting: false,
-      loading: true,
-      data: []
+      loading: false,
+      data: [],
+      geo: [],
+      blockStats: {
+        bestBlock: 0,
+        lastBlockTime: Date.now(),
+        avgBlockTime: 5000,
+        minBlockTime: 5000,
+        maxBlockTime: 5000,
+        blockTimes: [{seconds: 5}],
+        transactions: [{blockNumber: 0, transactions: 0}]
+      }
     }
     this.serverSocket()
   }
@@ -53,14 +60,14 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    API.get('/api/nodes')
-      .then(response => {
-        if(!response.data.success) return;
-        this.setState({
-          loading: false,
-          data: response.data.data
-        })
-      })
+    // API.get('/api/nodes')
+    //   .then(response => {
+    //     if(!response.data.success) return;
+    //     this.setState({
+    //       loading: false,
+    //       data: response.data.data
+    //     })
+    //   })
 
   }
 
@@ -70,12 +77,34 @@ export default class extends Component {
     this.setState({
       connecting: true
     })
-    const socket = io(baseURL)
+    const socket = io('http://localhost:9647')
 
     socket.on('connect', () => {
       self.setState({
         connected: true,
         connecting: false
+      })
+    })
+
+    socket.on('nodeList', (nodes) => {
+      let data = []
+      let geo = []
+      Object.keys(nodes).forEach((node) => {
+        data.push(nodes[node])
+        geo.push({
+          coordinates: nodes[node].geo.ll,
+          name:  nodes[node].name
+        })
+      })
+      self.setState({
+        geo,
+        data
+      })
+    })
+
+    socket.on('blockStats', (blockStats) => {
+      self.setState({
+        blockStats
       })
     })
 
@@ -92,40 +121,217 @@ export default class extends Component {
         connecting: true
       })
     })
+  }
 
+  formatPing(latency) {
+    if(latency <= 0) {
+      return (<div className="good">0 ms</div>)
+    } else if(latency <=100)  {
+      return (<div className="good">{latency} ms</div>)
+    } else if(latnecy <= 1000) {
+      return (<div className="ok">{latency} ms</div>)
+    } else {
+      return (<div className="bad">{latency} ms</div>)
+    }
+  }
 
+  formatUptime(uptime) {
+    if(uptime >= 90) {
+      return (<div className="good">{uptime}%</div>)
+    } else if(uptime >= 80)  {
+      return (<div className="ok">{uptime}%</div>)
+    } else {
+      return (<div className="bad">{uptime}%</div>)
+    }
+  }
+
+  formatLastBlockTime(lastBlock) {
+    const now = Date.now()
+    const elapsed = now-lastBlock
+    if(elapsed < 13000) {
+      return (<div className="good">{moment(lastBlock).fromNow()}</div>)
+    } else if (elapsed < 20000) {
+      return (<div className="ok">{moment(lastBlock).fromNow()}</div>)
+    } else {
+      return (<div className="bad">{moment(lastBlock).fromNow()}</div>)
+    }
+  }
+
+  formatLastBlock(lastBlock) {
+    const difference = this.state.blockStats.bestBlock - lastBlock
+    if( difference === 0) {
+      return (<div className="good">#{lastBlock.toLocaleString()}</div>)
+    } else if (difference < 3) {
+      return (<div className="ok">#{lastBlock.toLocaleString()}</div>)
+    } else {
+      return (<div className="bad">#{lastBlock.toLocaleString()}</div>)
+
+    }
+  }
+
+  formatPeers(peers) {
+    if(peers <= 0) {
+      return (<div className="bad">{peers}</div>)
+    } else if(peers < 3) {
+      return (<div className="ok">{peers}</div>)
+    } else {
+      return (<div className="good">{peers}</div>)
+
+    }
   }
 
   render() {
+    const RoundedBar = (props) => {
+      const {fill, x, y, height} = props;
+
+      return (
+        <g>
+          <rect id="Rectangle-3" x={x} y={y} width="4" height={height} fill={fill} rx="1"/>
+          <rect id="Rectangle-3" x={x - 1} y="0" width="6" height="80" fill={fill} fillOpacity="0" rx="1"/>
+        </g>
+      );
+    };
+
+    const data = this.state.blockStats.blockTimes
+    let min;
+    let max;
+    let avg;
+    let minTX;
+    let maxTX;
+    let avgTX;
+    min = this.state.blockStats.minBlockTime
+    max = this.state.blockStats.maxBlockTime
+    avg = this.state.blockStats.avgBlockTime
+    minTX = this.state.blockStats.minTransactions
+    maxTX = this.state.blockStats.maxTransactions
+    avgTX = this.state.blockStats.avgTransactions
+
     return (
       <Fragment>
-        <h3>LEDGERIUM BLOCK EXPLORER</h3>
+
+        <div className="d-flex justify-content-between align-items-center">
+          <h3>LEDGERIUM NODE STATS</h3>
+          <NavLink to="/blockexplorer">
+          <Button color="primary" size="sm" className="mb-2">
+            <i className="iconsminds-arrow-out-left"/> Go back
+          </Button>
+          </NavLink>
+        </div>
         <Separator className="mb-5" />
+
 
 
         <Card>
           <CardBody>
             <Row>
               <Colxx sm="12" className="mb-4">
+
+
               <div className="d-flex justify-content-between align-items-center">
-              <h3> Active Nodes: {this.state.data.length}/{this.state.data.length} </h3>
-              <NavLink to="/blockexplorer">
-              <Button color="primary" size="sm" className="mb-2">
-                <i className="iconsminds-arrow-out-left"/> Go back
-              </Button>
-              </NavLink>
+
+                <div className="d-flex justify-content-between align-items-center">
+
+                  <div>
+                    <span> Best block </span>
+                    <h3> #{this.state.blockStats.bestBlock.toLocaleString()} </h3>
+                    <br/>
+                    <br/>
+                    <span> Last Block </span>
+                    <h3> {moment(this.state.blockStats.lastBlockTime).fromNow()}</h3>
+                    <br/>
+                    <span> Avg Block Time </span>
+                    <h3> {(this.state.blockStats.avgBlockTime).toFixed(2)}s </h3>
+                  </div>
+
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div> Max Block Time {(this.state.blockStats.maxBlockTime).toFixed(2)}s </div>
+                      <div> Min Block Time {(this.state.blockStats.minBlockTime).toFixed(2)}s </div>
+                    </div>
+                    <br/>
+
+                    <BarChart
+                      width={400}
+                      height={150}
+                      data={this.state.blockStats.blockTimes}
+                      margin={{
+                        top: 0, right: 0, bottom: 0, left: 0,
+                      }}
+                      >
+                      <Bar dataKey={'seconds'} minPointSize={1} isAnimationActive={false} fill="#145388" shape={<RoundedBar/>}/>}
+                      <ReferenceLine y={avg} label="" stroke="#145388" />
+                      <YAxis domain={[min, max]}/>}
+                    </BarChart>
+
+                  </div>
+                </div>
+
+
+                <div className="d-flex justify-content-between align-items-center">
+
+
+
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div> Max TXs  {(this.state.blockStats.minTransactions)} </div>
+                      <div> Min Txs {(this.state.blockStats.maxTransactions)} </div>
+                    </div>
+                    <br/>
+
+                    <BarChart
+                      width={400}
+                      height={150}
+                      data={this.state.blockStats.transactionHistory}
+                      margin={{
+                        top: 0, right: 0, bottom: 0, left: 0,
+                      }}
+                      >
+                      <Bar dataKey={'transactions'} minPointSize={1} allowDecimals={false} isAnimationActive={false} fill="#145388" shape={<RoundedBar/>}/>}
+                      <ReferenceLine y={avgTX} label="" stroke="#145388" />
+                      <YAxis domain={[0, maxTX]}/>}
+                    </BarChart>
+
+                  </div>
+                </div>
+
+
+
+                <div>
+                  <WorldMap data={this.state.geo}/>
+                </div>
+
+
               </div>
+
+
+              </Colxx>
+              </Row>
+            </CardBody>
+          </Card>
+
+
+          <br/>
+          <div className="d-flex justify-content-between align-items-center">
+            <h3> Active Nodes: {this.state.data.length}/{this.state.data.length} </h3>
+            <br/>
+            <div> Last Miner {this.state.blockStats.lastBlockMiner}</div>
+          </div>
+          <Card>
+            <CardBody>
+            <Row>
+            <Colxx>
+
               <Table>
                 <thead>
                   <tr>
-                    <th> Node Name </th>
-                    <th> Node Type </th>
-                    <th> Node Latency </th>
-                    <th> Network Port </th>
-                    <th> Node Peers </th>
+                    <th> Name </th>
+                    <th> Type </th>
+                    <th> Latency </th>
+                    <th> Is mining </th>
+                    <th> Peers </th>
                     <th> Last Block </th>
-                    <th> Difficulty </th>
-                    <th> Last Block Time </th>
+                    <th> Last Block TXs </th>
+                    <th> Last Block time </th>
                     <th> Uptime </th>
                   </tr>
                 </thead>
@@ -133,26 +339,28 @@ export default class extends Component {
                 { !this.state.loading && this.state.data.length > 0 ? this.state.data.map((node, i ) => {
                   return (
                     <tr>
-                      <td> {node.name.split('/')[1]} </td>
-                      <td> {node.name} </td>
-                      <td> 0 ms</td>
-                      <td> {node.network.remoteAddress.split(':')[1]}</td>
-                      <td> {this.state.data.length}</td>
-                      <td> #{(node.protocols.istanbul.difficulty-1).toLocaleString()}</td>
-                      <td> {node.protocols.istanbul.difficulty} </td>
-                      <td> {moment(Date.now()).fromNow()} </td>
-                      <td> 100% </td>
+                      <td className="bolder"> {node.name} </td>
+                      <td className="bolder"> {node.type} </td>
+                      <td className="bolder"> {this.formatPing(node.ping)}</td>
+                      <td className="bolder"> {node.isMining ? <div className="good">Yes</div> : <div className="bad">Yes</div>}</td>
+                      <td className="bolder"> {this.formatPeers(node.peers)}</td>
+                      <td className="bolder"> {this.formatLastBlock(node.lastBlockNumber)}</td>
+                      <td className="bolder"> {node.lastBlockTransactions} </td>
+                      <td className="bolder"> {this.formatLastBlockTime(node.lastRecievedBlock)} </td>
+                      <td className="bolder"> {this.formatUptime(node.upTime)} </td>
                     </tr>
                   )
                 }) : "" }
                 </tbody>
               </Table>
-              This page does not represent the entire state of the Ledgerium network - listing a node on this page is a voluntary process.
 
               </Colxx>
            </Row>
           </CardBody>
         </Card>
+        <br/>
+        This page does not represent the entire state of the Ledgerium network - listing a node on this page is a voluntary process.
+
   </Fragment>
     );
   }
