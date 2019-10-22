@@ -31,7 +31,7 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:5577/api/q')
+    axios.get('faucetsvc/api/q')
       .then(response => {
         if(!response.data.success) return
         this.setState({
@@ -55,7 +55,7 @@ export default class extends Component {
   }
 
   getBalance(address) {
-    axios.get(`http://localhost:5577/api/balance/${address}`)
+    axios.get(`/faucetsvc/api/balance/${address}`)
         .then(response => {
           if(!response.data.success) return;
           const balance = response.data.data.balance
@@ -107,7 +107,7 @@ export default class extends Component {
     } else {
       const amount = parseInt(this.state.requestAmount)
       const address = this.state.address
-      axios.post('http://localhost:5577/api/', {amount, address,})
+      axios.post('/faucetsvc/api/', {amount, address,})
         .then(response => {
           this.setState({loading: false, receipt: response.data.data.receipt.data, message: <span>Transaction sent: <NavLink to={`/blockexplorer/tx/${response.data.data.receipt.data.transactionHash}`}>{response.data.data.receipt.data.transactionHash}</NavLink></span>});
           console.log(response.data)
@@ -176,7 +176,7 @@ export default class extends Component {
                {this.state.message ? this.state.message : null }
                </div>
                <div className="d-flex justify-content-center">
-               {this.state.receipt ? <a target="_blank" href={`/blockexplorer/tx/${this.state.receipt.transactionHash}`}> View Transaction <i className="simple-icon-login"/> </a> : null }
+               {this.state.receipt ? <a target="_blank" href={`/blockexplorer/tx/${this.state.receipt.transactionHash}`}> View Transaction  </a> : null }
                </div>
              </div>
             </CardBody>
