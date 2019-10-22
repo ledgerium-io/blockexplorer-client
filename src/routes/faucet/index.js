@@ -160,7 +160,7 @@ export default class extends Component {
              <ReCAPTCHA
               sitekey="6LckqzIUAAAAAOQtQAxFwCjtpilWmug5weMECc8U"
               onChange={this.onChange}
-            />,
+            />
              <Button
               color="primary"
               size="md"
