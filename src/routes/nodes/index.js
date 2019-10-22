@@ -47,7 +47,7 @@ export default class extends Component {
         transactions: [{blockNumber: 0, transactions: 0}]
       }
     }
-    this.serverSocket()
+    this.listen()
   }
 
   startTimer() {
@@ -71,57 +71,41 @@ export default class extends Component {
 
   }
 
+  componentWillUnmount () {
+   global.serverSocket.off('nodeList', this.setNodeList)
+   global.serverSocket.off('blockStats', this.setBlockStats)
 
-  serverSocket() {
-    const self = this
+ }
+
+ listen = () => {
+    global.serverSocket.on('nodeList', this.setNodeList)
+    global.serverSocket.on('blockStats', this.setBlockStats)
+
+  }
+
+  setBlockStats = (blockStats) => {
     this.setState({
-      connecting: true
-    })
-    const socket = io('http://localhost:9647')
-
-    socket.on('connect', () => {
-      self.setState({
-        connected: true,
-        connecting: false
-      })
-    })
-
-    socket.on('nodeList', (nodes) => {
-      let data = []
-      let geo = []
-      Object.keys(nodes).forEach((node) => {
-        data.push(nodes[node])
-        geo.push({
-          coordinates: nodes[node].geo.ll,
-          name:  nodes[node].name
-        })
-      })
-      self.setState({
-        geo,
-        data
-      })
-    })
-
-    socket.on('blockStats', (blockStats) => {
-      self.setState({
-        blockStats
-      })
-    })
-
-    socket.on('disconnect', () => {
-      self.setState({
-        connected: false,
-        connecting: false
-      })
-    })
-
-    socket.on('retry', () => {
-      self.setState({
-        connected: false,
-        connecting: true
-      })
+      blockStats
     })
   }
+
+  setNodeList = (nodes) => {
+    let data = []
+    let geo = []
+    Object.keys(nodes).forEach((node) => {
+      data.push(nodes[node])
+      geo.push({
+        coordinates: nodes[node].geo.ll,
+        name:  nodes[node].name
+      })
+    })
+    this.setState({
+      geo,
+      data
+    })
+  }
+
+
 
   formatPing(latency) {
     if(latency <= 0) {
