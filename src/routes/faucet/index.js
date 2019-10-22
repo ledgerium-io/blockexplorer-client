@@ -23,7 +23,7 @@ export default class extends Component {
       balance: '',
       requestAmount: 1,
       requestLimit: 3,
-      token: null,
+      reCaptcha: null,
       loading: false,
       receipt: null,
 
@@ -74,9 +74,9 @@ export default class extends Component {
     })
   }
 
-  onChange = (token) => {
+  onChange = (reCaptcha) => {
     this.setState({
-      token
+      reCaptcha
     })
   }
 
@@ -89,7 +89,7 @@ export default class extends Component {
       this.setState({error: 'Invalid Ledgerium address'})
       return false;
     }
-    if(!this.state.token) {
+    if(!this.state.reCaptcha) {
       this.setState({error: 'Complete reCaptcha before submitting'})
       return false;
     }
@@ -107,7 +107,8 @@ export default class extends Component {
     } else {
       const amount = parseInt(this.state.requestAmount)
       const address = this.state.address
-      axios.post('/faucetsvc/api/', {amount, address,})
+      const reCaptcha = this.state.reCaptcha
+      axios.post('/faucetsvc/api/', {amount, address, reCaptcha})
         .then(response => {
           this.setState({loading: false, receipt: response.data.data.receipt.data, message: <span>Transaction sent: <NavLink to={`/blockexplorer/tx/${response.data.data.receipt.data.transactionHash}`}>{response.data.data.receipt.data.transactionHash}</NavLink></span>});
           console.log(response.data)
