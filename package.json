@@ -1,7 +1,7 @@
 {
-  "name": "gogo-react",
+  "name": "Ledgerium Block Explorer",
   "version": "3.1.0",
-  "description": "Gogo - React Bootstrap 4 Admin Dashboard Template",
+  "description": "A block explorer and statistics for the Ledgerium blockchain",
   "scripts": {
     "start": "webpack-dev-server --inline --history-api-fallback --progress --config webpack/dev.js",
     "build": "webpack --config webpack/prod.js"
