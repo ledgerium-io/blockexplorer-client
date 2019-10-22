@@ -287,7 +287,7 @@ export default class extends Component {
                        </div>
                        <div className="d-flex justify-content-between">
                          <p>
-                         {tx.value} XLG
+                         {web3.utils.fromWei(`${tx.value || "0"}`, "ether")} XLG
                          </p>
                          <p>
                          <small>

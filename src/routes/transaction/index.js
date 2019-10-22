@@ -7,6 +7,7 @@ import BreadcrumbContainer from "Components/BreadcrumbContainer";
 import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
+const web3 = new Web3()
 import API from 'Components/API'
 
 export default class extends Component {
@@ -116,7 +117,7 @@ export default class extends Component {
                   <CardTitle className="mb-0">
                     Tx Value
                   </CardTitle>
-                  {tx.value} XLG
+                  {web3.utils.fromWei(`${tx.value || "0"}`, "ether")} XLG
                   <div className="progress-bar-circle">
                   </div>
                 </CardBody>
