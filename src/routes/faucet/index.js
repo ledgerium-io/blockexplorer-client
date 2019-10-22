@@ -109,7 +109,7 @@ export default class extends Component {
       const address = this.state.address
       axios.post('http://localhost:5577/api/', {amount, address,})
         .then(response => {
-          this.setState({loading: false, receipt: response.data.data.receipt.data, message: `Transaction sent: ${response.data.data.receipt.data.transactionHash}`});
+          this.setState({loading: false, receipt: response.data.data.receipt.data, message: <span>Transaction sent: <NavLink to={`/blockexplorer/tx/${response.data.data.receipt.data.transactionHash}`}>{response.data.data.receipt.data.transactionHash}</NavLink></span>});
           console.log(response.data)
         })
         .catch(error => {
