@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import IntlMessages from "Util/IntlMessages";
-import { Row, Card, CardBody,CardHeader, CardTitle, Table, Button, Jumbotron, Badge, FormGroup, Input, Label } from "reactstrap";
+import { Alert, Row, Card, CardBody,CardHeader, CardTitle, Table, Button, Jumbotron, Badge, FormGroup, Input, Label } from "reactstrap";
 
 import { Colxx, Separator } from "Components/CustomBootstrap";
 import BreadcrumbContainer from "Components/BreadcrumbContainer";
@@ -9,7 +9,7 @@ import axios from 'axios'
 import {connectedNetwork} from 'Constants/defaultValues'
 import ReCAPTCHA from "react-google-recaptcha";
 import Web3 from 'web3';
-const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
+const web3 = new Web3();
 
 export default class extends Component {
 
@@ -18,14 +18,26 @@ export default class extends Component {
     this.state = {
       validAddress: null,
       message: '',
+      error: '',
       address: '',
       balance: '',
       requestAmount: 1,
+      requestLimit: 3,
       token: null,
       loading: false,
       receipt: null,
 
     }
+  }
+
+  componentWillMount() {
+    axios.get('http://localhost:5577/api/q')
+      .then(response => {
+        if(!response.data.success) return
+        this.setState({
+          requestLimit: response.data.data.limit
+        })
+      })
   }
 
   onAddressChange = (e) => {
@@ -37,16 +49,21 @@ export default class extends Component {
     if(!web3.utils.isAddress(address)) {
       return this.setState({address, validAddress: false})
     } else {
-      web3.eth.getBalance(address)
-        .then(balance => {
-          balance = web3.utils.fromWei(balance, 'ether')
-          console.log(balance)
-          this.setState({address, balance, validAddress: true})
-        })
-        .catch(()=>{
-          this.setState({address, validAddress: true})
-        })
+      this.setState({address, validAddress: true})
+      this.getBalance(address)
     }
+  }
+
+  getBalance(address) {
+    axios.get(`http://localhost:5577/api/balance/${address}`)
+        .then(response => {
+          if(!response.data.success) return;
+          const balance = response.data.data.balance
+          this.setState({
+            balance: web3.utils.fromWei(balance.toString(), "ether")
+          })
+        })
+        .catch(console.log)
   }
 
   onRequestAmountChange = (e) => {
@@ -64,28 +81,44 @@ export default class extends Component {
   }
 
   passedChecks = () => {
-    if(!this.state.validAddress) return false;
-    if(this.state.address.length <= 0) return false;
-    if(!this.state.token) return false;
-    if(this.state.requestAmount < 0 || this.state.requestAmount > 3) return false;
+    if(!this.state.validAddress) {
+      this.setState({error: 'Invalid Ledgerium address'})
+      return false;
+    }
+    if(this.state.address.length <= 0) {
+      this.setState({error: 'Invalid Ledgerium address'})
+      return false;
+    }
+    if(!this.state.token) {
+      this.setState({error: 'Complete reCaptcha before submitting'})
+      return false;
+    }
+    if(this.state.requestAmount < 0 || this.state.requestAmount > 3) {
+      this.setState({error: 'Invalid request amount'})
+      return false;
+    }
     return true;
   }
 
   submit = () => {
-    this.setState({loading: true, receipt: null, message: ''});
+    this.setState({loading: true, receipt: null, message: '', error: ''});
     if(!this.passedChecks()) {
       return this.setState({loading: false});
     } else {
       const amount = parseInt(this.state.requestAmount)
       const address = this.state.address
-      axios.post('http://testnet.ledgerium.net:5577/', {amount, address,})
+      axios.post('http://localhost:5577/api/', {amount, address,})
         .then(response => {
-          this.setState({loading: false, receipt: response.data.receipt, message: response.data.message});
+          this.setState({loading: false, receipt: response.data.data.receipt.data, message: `Transaction sent: ${response.data.data.receipt.data.transactionHash}`});
           console.log(response.data)
         })
         .catch(error => {
           this.setState({loading: false});
-          console.log(error)
+          if(!error.response.data.success) {
+            this.setState({
+              error: error.response.data.message
+            })
+          }
         })
     }
   }
@@ -102,6 +135,11 @@ export default class extends Component {
             <div>
               <h3> {connectedNetwork.name} Faucet </h3>
               <Separator className="mb-5" />
+
+              {this.state.error ? <Alert color="danger">{this.state.error}</Alert> : null}
+              {this.state.message ? <Alert color="info">{this.state.message}</Alert> : null}
+              {this.state.message || this.state.error ? null : <br/>}
+
               <FormGroup>
                 <Label for="address"> Address {this.state.address.length>0 && this.state.validAddress ? <i className="simple-icon-check"/> : <i className="simple-icon-exclamation"/> }</Label>
                 <Input type="text" id="address" value={this.state.address} onChange={this.onAddressChange}/>
