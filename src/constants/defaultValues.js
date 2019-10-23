@@ -23,7 +23,7 @@ let networkList = [
     name: 'Ledgerium Toorak Testnet',
     http: 'http://toorak.ledgerium.io/blockexplorersvc',
     ws: 'http://toorak.ledgerium.io',
-    faucetUrl: 'http://toorak.ledgerium.net/faucet',
+    faucetUrl: 'http://toorak.ledgerium.io/faucetsvc',
     type: 'testnet',
 
   },
@@ -32,7 +32,7 @@ let networkList = [
     name: 'Ledgerium Flinders Testnet',
     http: 'http://flinders.ledgerium.io/blockexplorersvc',
     ws: 'http://flinders.ledgerium.io',
-    faucetUrl: 'http://flinders.ledgerium.io/faucet',
+    faucetUrl: 'http://flinders.ledgerium.io/faucetsvc',
     type: 'testnet',
   },
   {
@@ -41,7 +41,6 @@ let networkList = [
     http: 'http://localhost:2002',
     ws: 'http://localhost:2002',
     faucetUrl: 'http://localhost:5577',
-
     type: 'custom',
   }
 ]
