@@ -81,6 +81,7 @@ class NetworkSwitch extends Component {
       id: networks.length+1,
       name: customNetworkName,
       http: customNetworkURL,
+      faucetUrl: 'http://localhost:5577',
       ws: customNetworkWS || customNetworkURL,
       type: 'custom'
     }
@@ -96,11 +97,12 @@ class NetworkSwitch extends Component {
     location.reload(true);
 
   }
-  switchNetwork = (name, http, ws, type) => {
-    if(!name || !http || !ws || !type) return;
+  switchNetwork = (name, http, ws, type, faucetUrl) => {
+    if(!name || !http || !ws || !type || !faucetUrl) return;
     const network = JSON.stringify({
       name,
       http,
+      faucetUrl,
       ws,
       type
     })
@@ -207,7 +209,7 @@ class NetworkSwitch extends Component {
         </DropdownToggle>
         <DropdownMenu className="mt-3" right>
           {networks.map( (network, i) => {
-            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.http, network.ws, network.type)}} key={network+i}>
+            return(<DropdownItem onClick={()=>{this.switchNetwork(network.name, network.http, network.ws, network.type, network.faucetUrl)}} key={network+i}>
               {network.name}
             </DropdownItem>)
           })}
