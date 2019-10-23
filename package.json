@@ -1,5 +1,5 @@
 {
-  "name": "Ledgerium Block Explorer",
+  "name": "ledgerium-block-explorer",
   "version": "3.1.0",
   "description": "A block explorer and statistics for the Ledgerium blockchain",
   "scripts": {
