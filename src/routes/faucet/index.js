@@ -10,6 +10,7 @@ import {connectedNetwork} from 'Constants/defaultValues'
 import ReCAPTCHA from "react-google-recaptcha";
 import Web3 from 'web3';
 const web3 = new Web3();
+console.log(`${connectedNetwork.faucetUrl}`)
 
 export default class extends Component {
 
@@ -22,7 +23,7 @@ export default class extends Component {
       address: '',
       balance: '',
       requestAmount: 1,
-      requestLimit: 3,
+      requestLimit: 0,
       reCaptcha: null,
       loading: false,
       receipt: null,
@@ -31,7 +32,7 @@ export default class extends Component {
   }
 
   componentWillMount() {
-    axios.get('faucetsvc/api/q')
+    axios.get(`${connectedNetwork.faucetUrl}/api/q`)
       .then(response => {
         if(!response.data.success) return
         this.setState({
@@ -55,7 +56,7 @@ export default class extends Component {
   }
 
   getBalance(address) {
-    axios.get(`/faucetsvc/api/balance/${address}`)
+    axios.get(`${connectedNetwork.faucetUrl}/api/balance/${address}`)
         .then(response => {
           if(!response.data.success) return;
           const balance = response.data.data.balance
@@ -108,7 +109,7 @@ export default class extends Component {
       const amount = parseInt(this.state.requestAmount)
       const address = this.state.address
       const reCaptcha = this.state.reCaptcha
-      axios.post('/faucetsvc/api/', {amount, address, reCaptcha})
+      axios.post(`${connectedNetwork.faucetUrl}/api/`, {amount, address, reCaptcha})
         .then(response => {
           this.setState({loading: false, receipt: response.data.data.receipt.data, message: <span>Transaction sent: <NavLink to={`/blockexplorer/tx/${response.data.data.receipt.data.transactionHash}`}>{response.data.data.receipt.data.transactionHash}</NavLink></span>});
           console.log(response.data)
