@@ -112,7 +112,7 @@ export default class extends Component {
       return (<div className="good">0 ms</div>)
     } else if(latency <=100)  {
       return (<div className="good">{latency} ms</div>)
-    } else if(latnecy <= 1000) {
+    } else if(latency <= 1000) {
       return (<div className="ok">{latency} ms</div>)
     } else {
       return (<div className="bad">{latency} ms</div>)
