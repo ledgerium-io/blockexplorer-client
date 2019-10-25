@@ -183,13 +183,12 @@ export default class extends Component {
     let minTX;
     let maxTX;
     let avgTX;
-    min = this.state.blockStats.minBlockTime
-    max = this.state.blockStats.maxBlockTime
+    min = this.state.blockStats.minBlockTime/1000
+    max = this.state.blockStats.maxBlockTime/1000
     avg = this.state.blockStats.avgBlockTime
     minTX = this.state.blockStats.minTransactions
     maxTX = this.state.blockStats.maxTransactions
     avgTX = this.state.blockStats.avgTransactions
-
     return (
       <Fragment>
 
@@ -244,7 +243,7 @@ export default class extends Component {
                       >
                       <Bar dataKey={'seconds'} minPointSize={1} isAnimationActive={false} fill="#145388" shape={<RoundedBar/>}/>}
                       <ReferenceLine y={avg} label="" stroke="#145388" />
-                      <YAxis domain={[min, max]}/>}
+                      <YAxis domain={[0, max]}/>}
                     </BarChart>
 
                   </div>
