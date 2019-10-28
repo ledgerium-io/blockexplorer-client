@@ -21,9 +21,9 @@ let networkList = [
   {
     id: 2,
     name: 'Ledgerium Toorak Testnet',
-    http: 'http://toorak.ledgerium.io/blockexplorersvc',
-    ws: 'http://toorak.ledgerium.io',
-    faucetUrl: 'http://toorak.ledgerium.io/faucetsvc',
+    http: 'https://toorak.ledgerium.io/blockexplorersvc',
+    ws: 'https://toorak.ledgerium.io',
+    faucetUrl: 'https://toorak.ledgerium.io/faucetsvc',
     type: 'testnet',
 
   },
