@@ -256,8 +256,8 @@ export default class extends Component {
 
                   <div>
                     <div className="d-flex justify-content-between align-items-center">
-                      <div> Max TXs  {(this.state.blockStats.minTransactions)} </div>
-                      <div> Min Txs {(this.state.blockStats.maxTransactions)} </div>
+                      <div> Max TXs  {(this.state.blockStats.maxTransactions)} </div>
+                      <div> Min Txs {(this.state.blockStats.minTransactions)} </div>
                     </div>
                     <br/>
 
