@@ -297,7 +297,11 @@ export default class extends Component {
           <div className="d-flex justify-content-between align-items-center">
             <h3> Active Nodes: {this.state.data.length}/{this.state.data.length} </h3>
             <br/>
-            <div> Last Miner {this.state.blockStats.lastBlockMiner}</div>
+            <div> Last Miner
+            <NavLink to={"/blockexplorer/adress/" + this.state.blockStats.lastBlockMiner}>
+                {this.state.blockStats.lastBlockMiner}
+            </NavLink>
+            </div>
           </div>
           <Card>
             <CardBody>
