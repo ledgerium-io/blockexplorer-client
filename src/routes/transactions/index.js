@@ -25,7 +25,7 @@ import BreadcrumbContainer from "Components/BreadcrumbContainer";
 import io from 'socket.io-client';
 import { NavLink } from "react-router-dom";
 import Web3 from 'web3';
-const web3 = new Web3(new Web3.providers.HttpProvider('http://testnet.ledgerium.net:8545/'));
+const web3 = new Web3();
 import API from 'Components/API'
 import {addressType} from "Components/Functions"
 
