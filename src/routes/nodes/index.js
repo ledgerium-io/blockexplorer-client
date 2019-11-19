@@ -94,13 +94,8 @@ export default class extends Component {
     let geo = []
     Object.keys(nodes).forEach((node) => {
       data.push(nodes[node])
-      geo.push({
-        coordinates: nodes[node].geo.ll,
-        name:  nodes[node].name
-      })
     })
     this.setState({
-      geo,
       data
     })
   }
@@ -202,8 +197,6 @@ export default class extends Component {
         </div>
         <Separator className="mb-5" />
 
-
-
         <Card>
           <CardBody>
             <Row>
@@ -297,7 +290,7 @@ export default class extends Component {
           <div className="d-flex justify-content-between align-items-center">
             <h3> Active Nodes: {this.state.data.length}/{this.state.data.length} </h3>
             <br/>
-            <div> Last Miner
+            <div> Last Miner {" "}
             <NavLink to={"/blockexplorer/adress/" + this.state.blockStats.lastBlockMiner}>
                 {this.state.blockStats.lastBlockMiner}
             </NavLink>
