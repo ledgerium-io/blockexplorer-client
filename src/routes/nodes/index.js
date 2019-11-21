@@ -94,8 +94,12 @@ export default class extends Component {
     let geo = []
     Object.keys(nodes).forEach((node) => {
       data.push(nodes[node])
+      if(nodes[node].geo) {
+        geo.push(nodes[node].geo)
+      }
     })
     this.setState({
+      geo,
       data
     })
   }
