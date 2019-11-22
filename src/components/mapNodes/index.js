@@ -30,7 +30,7 @@ class BasicMap extends Component {
     let markers = []
     for(let i=0; i<props.data.length; i++) {
       markers.push({
-        coordinates: [props.data[i].coordinates[1], props.data[i].coordinates[0]]
+        coordinates: [props.data[i].ll[1], props.data[i].ll[0]]
       })
     }
     this.setState({
